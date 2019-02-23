@@ -13,6 +13,7 @@ https://github.com/fhopf/akka-crawler-example
 * 多actor，执行 FetchInParallelExecution
 * 串行，执行 SequentialExecution
 * 单actor，执行SimpleExecution
+* 失败actor，执行FailingExecution
 
 > 技术版本
 
