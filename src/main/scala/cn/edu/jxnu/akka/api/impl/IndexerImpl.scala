@@ -2,8 +2,8 @@ package cn.edu.jxnu.akka.api.impl
 
 import java.io.IOException
 
-import cn.edu.jxnu.akka.PageContent
 import cn.edu.jxnu.akka.api.Indexer
+import cn.edu.jxnu.akka.{IndexingException, PageContent}
 import org.apache.lucene.document.{Document, Field}
 import org.apache.lucene.index.{CorruptIndexException, IndexWriter}
 import org.slf4j.LoggerFactory
@@ -20,8 +20,8 @@ class IndexerImpl(indexWriter: IndexWriter) extends Indexer {
         try {
             indexWriter.addDocument(toDocument(pageContent))
         } catch {
-            case ex: CorruptIndexException => throw new IllegalStateException(ex)
-            case ex: IOException => throw new IllegalStateException(ex)
+            case ex: CorruptIndexException => throw new IndexingException(ex.getMessage)
+            case ex: IOException => throw new IndexingException(ex.getMessage)
         }
     }
 
@@ -34,10 +34,10 @@ class IndexerImpl(indexWriter: IndexWriter) extends Indexer {
             doc.add(new Field("title", content.getTitle(), Field.Store.YES, Field.Index.ANALYZED))
             //不存
             doc.add(new Field("content", content.getContent(), Field.Store.NO, Field.Index.ANALYZED))
-        }catch {
-            case  ex:Exception=> {
+        } catch {
+            case ex: Exception => {
                 logger.error(ex.getMessage)
-                throw new IllegalStateException(ex)
+                throw new IndexingException(ex.getMessage)
             }
         }
         doc
@@ -47,8 +47,8 @@ class IndexerImpl(indexWriter: IndexWriter) extends Indexer {
         try {
             indexWriter.commit()
         } catch {
-            case ex: CorruptIndexException => throw new IllegalStateException(ex)
-            case ex: IOException => throw new IllegalStateException(ex)
+            case ex: CorruptIndexException => throw new IndexingException(ex.getMessage)
+            case ex: IOException => throw new IndexingException(ex.getMessage)
         }
     }
 
@@ -56,8 +56,8 @@ class IndexerImpl(indexWriter: IndexWriter) extends Indexer {
         try {
             indexWriter.close()
         } catch {
-            case ex: CorruptIndexException => throw new IllegalStateException(ex)
-            case ex: IOException => throw new IllegalStateException(ex)
+            case ex: CorruptIndexException => throw new IndexingException(ex.getMessage)
+            case ex: IOException => throw new IndexingException(ex.getMessage)
         }
     }
 

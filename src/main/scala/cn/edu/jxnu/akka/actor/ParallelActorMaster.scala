@@ -20,9 +20,19 @@ class ParallelActorMaster(latch: CountDownLatch) extends Master(latch) {
     private var parser: ActorRef = _
     private var indexer: ActorRef = _
 
-    def this(indexWriter: IndexWriter, pageRetriever: PageRetriever, latch: CountDownLatch) = {
+    def this(pageRetriever: PageRetriever, indexWriter: IndexWriter, latch: CountDownLatch) = {
 
         this(latch)
+        //使用路由
+        parser = getContext().actorOf(Props.create(classOf[PageParsingActor], pageRetriever).
+          withRouter(new RoundRobinPool(10)).withDispatcher("worker-dispatcher"))
+        indexer = getContext().actorOf(Props.create(classOf[IndexingActor], new IndexerImpl(indexWriter)))
+        logger.info("ParallelMaster constructor executed")
+    }
+
+    def this(pageRetriever: PageRetriever, indexWriter: IndexWriter) = {
+
+        this(null)
         //使用路由
         parser = getContext().actorOf(Props.create(classOf[PageParsingActor], pageRetriever).
           withRouter(new RoundRobinPool(10)).withDispatcher("worker-dispatcher"))

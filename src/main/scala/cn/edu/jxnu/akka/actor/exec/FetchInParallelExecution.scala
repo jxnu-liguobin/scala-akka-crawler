@@ -16,7 +16,8 @@ class FetchInParallelExecution extends Execution {
     override def downloadAndIndex(path: String, writer: IndexWriter) = {
         val actorSystem = ActorSystem.create()
         val countDownLatch = new CountDownLatch(10)
-        val master = actorSystem.actorOf(Props.create(classOf[ParallelActorMaster], writer, new HtmlParserPageRetriever(path), countDownLatch))
+        val master = actorSystem.actorOf(Props.create(classOf[ParallelActorMaster], new HtmlParserPageRetriever(path),
+            writer, countDownLatch))
         master ! (path)
         try {
             countDownLatch.await()

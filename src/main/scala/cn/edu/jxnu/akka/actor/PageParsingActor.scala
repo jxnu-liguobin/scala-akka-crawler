@@ -1,5 +1,7 @@
 package cn.edu.jxnu.akka.actor
 
+import java.util.Optional
+
 import akka.actor.{UntypedAbstractActor, actorRef2Scala}
 import cn.edu.jxnu.akka.PageContent
 import cn.edu.jxnu.akka.api.PageRetriever
@@ -22,4 +24,10 @@ class PageParsingActor(pageRetriever: PageRetriever) extends UntypedAbstractActo
             case _ => unhandled(message)
         }
     }
+
+    override def preRestart(reason: Throwable, message: Optional[Any]): Unit = {
+        logger.info("Restarting PageParsingActor because of {}", reason.getClass)
+        super.preRestart(reason, message)
+    }
+
 }

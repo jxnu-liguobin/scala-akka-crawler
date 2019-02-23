@@ -2,6 +2,7 @@ package cn.edu.jxnu.akka.api.impl
 
 import java.io.{File, IOException}
 
+import cn.edu.jxnu.akka.RetrievalException
 import cn.edu.jxnu.akka.api.Execution
 import org.apache.lucene.document.Document
 import org.apache.lucene.index._
@@ -71,6 +72,7 @@ class Executor(execution: Execution) {
                     } catch {
                         case ex1: IOException =>
                             logger.error(ex1.getMessage(), ex1)
+
                     }
                 }
         } finally {
@@ -78,7 +80,10 @@ class Executor(execution: Execution) {
                 try {
                     writer.close()
                 } catch {
-                    case ex: CorruptIndexException => logger.error(ex.getMessage(), ex)
+                    case ex: CorruptIndexException => {
+                        logger.error(ex.getMessage(), ex)
+                        throw new RetrievalException(ex.getMessage)
+                    }
                     case ex: IOException => logger.error(ex.getMessage(), ex)
                 }
             }

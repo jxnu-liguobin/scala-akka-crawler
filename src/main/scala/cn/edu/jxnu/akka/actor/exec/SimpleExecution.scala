@@ -15,7 +15,7 @@ class SimpleExecution extends Execution {
         val actorSystem: ActorSystem = ActorSystem.create
         val master: ActorRef = actorSystem.actorOf(Props.create(classOf[SimpleActorMaster], new HtmlParserPageRetriever(path), writer))
         master ! path
-//        actorSystem.terminate(); //旧版本是shutdown()
+        //        actorSystem.terminate(); //旧版本是shutdown()
     }
 
 }

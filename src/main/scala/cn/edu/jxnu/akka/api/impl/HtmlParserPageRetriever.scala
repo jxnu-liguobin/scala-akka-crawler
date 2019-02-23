@@ -2,8 +2,8 @@ package cn.edu.jxnu.akka.api.impl
 
 import java.util._
 
-import cn.edu.jxnu.akka.PageContent
 import cn.edu.jxnu.akka.api.PageRetriever
+import cn.edu.jxnu.akka.{PageContent, RetrievalException}
 import org.htmlparser.tags.{BodyTag, LinkTag, TitleTag}
 import org.htmlparser.util.ParserException
 import org.htmlparser.visitors.NodeVisitor
@@ -33,7 +33,7 @@ class HtmlParserPageRetriever(baseUrl: String) extends PageRetriever {
             parser.visitAllNodesWith(visitor)
             visitor.getContent()
         } catch {
-            case ex: ParserException => throw new IllegalStateException(ex)
+            case ex: ParserException => throw new RetrievalException(ex.getMessage)
         }
     }
 
@@ -81,7 +81,8 @@ class HtmlParserPageRetriever(baseUrl: String) extends PageRetriever {
 
         def getContent(): PageContent = new PageContent(currentUrl, linksToVisit, title, content)
 
-        private def isProbablyHtml(link: String): Boolean = link.startsWith("http://") || link.startsWith("https://") || link.endsWith("/")
+        private def isProbablyHtml(link: String): Boolean = link.startsWith("http://") ||
+          link.startsWith("https://") || link.endsWith("/")
     }
 
 }
