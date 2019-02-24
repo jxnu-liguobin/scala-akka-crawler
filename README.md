@@ -2,13 +2,13 @@
   
 这个仓库代码只是一个关于如何在Akka中实现生产者-消费者的示例。
 
-> 这是根据Florian Hopf项目完善：
+> 这是根据Florian Hopf项目完善的：
 
 http://blog.florian-hopf.de/2012/08/getting-rid-of-synchronized-using-akka.html
 
 https://github.com/fhopf/akka-crawler-example
 
-> 此代码库包含3个简单的Web爬虫程序示例，可执行main方法在cn.edu.jxnu.akka.actor.exec中：
+> 此代码库包含4个简单的Web爬虫程序示例，可执行main方法在cn.edu.jxnu.akka.actor.exec中：
 
 * 多actor，执行 FetchInParallelExecution
 * 串行，执行 SequentialExecution
