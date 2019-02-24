@@ -25,17 +25,18 @@ class IndexingActor(indexer: Indexer) extends UntypedAbstractActor {
     override def onReceive(message: Any) = {
 
         logger.info("indexing,actor is:" + self)
+        logger.info("IndexingActor当前消息类型：" + message.getClass.getSimpleName)
         message match {
             //页面消息
-            case content: PageContent => {
+            case (content: PageContent, _) => {
                 indexer.index(content)
-                this.getSender().tell(new IndexedMessage(content.getPath()), this.getSelf())
+                this.getSender() ! IndexedMessage(content.getPath())
             }
             //索引提交消息
-            case _: COMMIT_MESSAGE => {
+            case (_: COMMIT_MESSAGE, _) => {
                 indexer.commit()
                 //getSelf可以获取actor的ActorRef引用
-                this.getSender().tell(new COMMITTED_MESSAGE, this.getSelf())
+                this.getSender() ! COMMITTED_MESSAGE
             }
             //其他消息
             case _ => {

@@ -1,6 +1,5 @@
 package cn.edu.jxnu.akka.actor
 
-import java.util.List
 import java.util.concurrent.CountDownLatch
 
 import akka.actor.{ActorRef, UntypedAbstractActor}
@@ -19,40 +18,42 @@ abstract class Master(latch: CountDownLatch) extends UntypedAbstractActor {
 
     override def onReceive(message: Any) = {
 
+        logger.info("master,actor is:" + self)
+        logger.info("Master当前消息类型：" + message.getClass.getSimpleName)
         message match {
             //启动
             case start: String => {
                 logger.info("=======================start================")
                 visitedPageStore.add(start)
-                getParser().tell(visitedPageStore.getNext(), getSelf())
+                getParser() ! visitedPageStore.getNext()
             }
             //页面
-            case PageContent(path: String, links: List[String], title: String, content: String) => {
+            case (content: PageContent, _) => {
                 logger.info("========================page==============")
-                getIndexer().tell(PageContent(path, links, title, content), getSelf())
+                getIndexer() ! content
                 //存储待访问页面链接
-                visitedPageStore.addAll(links)
+                visitedPageStore.addAll(content.getLinksToFollow())
                 if (visitedPageStore.isFinished()) {
                     //完成了则提交
-                    getIndexer().tell(new COMMIT_MESSAGE(), getSelf())
+                    getIndexer() ! COMMIT_MESSAGE
                 } else {
                     //继续获取下一个页面
                     for (page <- visitedPageStore.getNextBatch()) {
-                        getParser().tell(page, getSelf())
+                        getParser() ! page
                     }
                 }
 
             }
             //索引
-            case indexedMessage: IndexedMessage => {
+            case (indexedMessage: IndexedMessage, _) => {
                 logger.info("====================index=================")
                 visitedPageStore.finished(indexedMessage.getPath)
                 if (visitedPageStore.isFinished())
-                    getIndexer().tell(new COMMIT_MESSAGE(), getSelf())
+                    getIndexer() ! COMMIT_MESSAGE
 
             }
             //提交
-            case _: COMMITTED_MESSAGE => {
+            case (COMMITTED_MESSAGE, _) => {
                 logger.info("======================end================")
                 logger.info("Shutting down, finished")
                 getContext().system.terminate()

@@ -15,6 +15,9 @@ class PageParsingActor(pageRetriever: PageRetriever) extends UntypedAbstractActo
     private val logger = LoggerFactory.getLogger(classOf[PageParsingActor])
 
     override def onReceive(message: Any) = {
+
+        logger.info("page parsing,actor is:" + self)
+        logger.info("PageParsingActor当前消息类型：" + message.getClass.getSimpleName)
         message match {
             case msg: String => {
                 val content: PageContent = pageRetriever.fetchPageContent(msg)

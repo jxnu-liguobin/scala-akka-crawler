@@ -26,7 +26,7 @@ class HtmlParserPageRetriever(baseUrl: String) extends PageRetriever {
      */
     override def fetchPageContent(url: String): PageContent = {
 
-        logger.debug("Fetching {}", url)
+        logger.info("Fetching {}", url)
         try {
             val parser: Parser = new Parser(url)
             val visitor: PageContentVisitor = new PageContentVisitor(baseUrl, url)
@@ -60,7 +60,7 @@ class HtmlParserPageRetriever(baseUrl: String) extends PageRetriever {
         override def visitTag(tag: Tag) = {
             tag match {
                 case linkTag: LinkTag => {
-                    if (linkTag.getLink().contains(baseUrl) && isProbablyHtml(linkTag.getLink())) {
+                    if (linkTag.getLink().startsWith(baseUrl) && isProbablyHtml(linkTag.getLink())) {
                         logger.info("Using link pointing to {}", linkTag.getLink())
                         linksToVisit.add(linkTag.getLink())
                     } else {
