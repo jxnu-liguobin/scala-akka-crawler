@@ -1,5 +1,7 @@
 package cn.edu.jxnu.akka.api
 
+import java.io.File
+
 import cn.edu.jxnu.akka.PageContent
 
 /**
@@ -16,4 +18,7 @@ abstract class Indexer {
 
     //关闭
     def close()
+
+    //查询
+    def searchAll(file: File)
 }

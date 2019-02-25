@@ -15,7 +15,7 @@ class FetchInParallelExecution extends Execution {
 
     override def downloadAndIndex(path: String, writer: IndexWriter) = {
         val actorSystem = ActorSystem.create()
-        val countDownLatch = new CountDownLatch(1)
+        val countDownLatch = new CountDownLatch(10)
         val master = actorSystem.actorOf(Props.create(classOf[ParallelActorMaster], new HtmlParserPageRetriever(path),
             writer, countDownLatch))
         master ! (path)
@@ -34,6 +34,6 @@ object FetchInParallelExecution extends App {
     override def main(args: Array[String]) {
         val execution = new FetchInParallelExecution()
         val exec = new Executor(execution)
-        exec.execute("http://www.baidu.com/")
+        exec.execute("http://www.synyx.de/")
     }
 }

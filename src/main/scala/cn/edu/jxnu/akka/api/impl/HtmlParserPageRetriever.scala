@@ -4,7 +4,7 @@ import java.util._
 
 import cn.edu.jxnu.akka.api.PageRetriever
 import cn.edu.jxnu.akka.{PageContent, RetrievalException}
-import org.htmlparser.tags.{BodyTag, LinkTag, TitleTag}
+import org.htmlparser.tags.{BodyTag, ImageTag, LinkTag, TitleTag}
 import org.htmlparser.util.ParserException
 import org.htmlparser.visitors.NodeVisitor
 import org.htmlparser.{Parser, Tag}
@@ -31,7 +31,8 @@ class HtmlParserPageRetriever(baseUrl: String) extends PageRetriever {
             val parser: Parser = new Parser(url)
             val visitor: PageContentVisitor = new PageContentVisitor(baseUrl, url)
             parser.visitAllNodesWith(visitor)
-            visitor.getContent()
+            //            visitor.getContent()
+            visitor.getContentAndImages()
         } catch {
             case ex: ParserException => throw new RetrievalException(ex.getMessage)
         }
@@ -47,6 +48,7 @@ class HtmlParserPageRetriever(baseUrl: String) extends PageRetriever {
         private val linksToVisit: List[String] = new ArrayList[String]()
         private var content: String = _
         private var title: String = _
+        private var imagePath: List[String] = new ArrayList[String]()
         private var baseUrl: String = _
         private var currentUrl: String = _
 
@@ -54,7 +56,6 @@ class HtmlParserPageRetriever(baseUrl: String) extends PageRetriever {
             this(true)
             this.baseUrl = baseUrl
             this.currentUrl = currentUrl
-
         }
 
         override def visitTag(tag: Tag) = {
@@ -73,6 +74,10 @@ class HtmlParserPageRetriever(baseUrl: String) extends PageRetriever {
                 case bodyTag: BodyTag => {
                     content = bodyTag.toPlainTextString()
                 }
+                case imageTag: ImageTag => {
+                    if (!imagePath.contains(imageTag.getAttribute("src")))
+                        imagePath.add(imageTag.getAttribute("src"))
+                }
                 case _ => {
                     logger.warn("Unknown type of label, unrecognizable")
                 }
@@ -80,6 +85,10 @@ class HtmlParserPageRetriever(baseUrl: String) extends PageRetriever {
         }
 
         def getContent(): PageContent = new PageContent(currentUrl, linksToVisit, title, content)
+
+        def getContentAndImages(): PageContent = new PageContent(currentUrl, linksToVisit, title, content, imagePath)
+
+        def getImages() = this.imagePath
 
         private def isProbablyHtml(link: String): Boolean = link.startsWith("http://") ||
           link.startsWith("https://") || link.endsWith("/")

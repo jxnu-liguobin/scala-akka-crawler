@@ -5,13 +5,15 @@ package cn.edu.jxnu.akka
  */
 class RetrievalException(val message: String) extends RuntimeException(message) {
 
-    final val ETRIEVAL_CODE_ERROR: Int = 2000
-
-    var code: Int = ETRIEVAL_CODE_ERROR
+    var code: Int = RetrievalException.ETRIEVAL_CODE_ERROR
 
     def this(code: Int, message: String) = {
         this(message)
         this.code = code
     }
 
+}
+
+object RetrievalException {
+    final val ETRIEVAL_CODE_ERROR: Int = 2000
 }

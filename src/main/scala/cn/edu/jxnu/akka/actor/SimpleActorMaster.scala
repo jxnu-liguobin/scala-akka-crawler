@@ -34,18 +34,8 @@ class SimpleActorMaster(latch: CountDownLatch) extends Master(latch) {
         logger.info("SimpleActorMaster constructor executed")
     }
 
-    def this(pageRetriever: PageRetriever, indexWriter: IndexWriter, latch: CountDownLatch) = {
+    protected def getIndexer(): ActorRef = this.indexer
 
-        //设置并行数
-        this(latch)
-        this.indexer = getContext().actorOf(Props.create(classOf[IndexingActor], new IndexerImpl(indexWriter)))
-        this.parser = getContext().actorOf(Props.create(classOf[PageParsingActor], pageRetriever))
-        logger.info("SimpleActorMaster constructor executed")
-
-    }
-
-    protected def getIndexer(): ActorRef = indexer
-
-    protected def getParser(): ActorRef = parser
+    protected def getParser(): ActorRef = this.parser
 
 }

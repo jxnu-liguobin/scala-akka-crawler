@@ -1,8 +1,8 @@
 package cn.edu.jxnu.akka.actor
 
-import akka.actor.UntypedAbstractActor
+import akka.actor.{Props, UntypedAbstractActor}
 import cn.edu.jxnu.akka.PageContent
-import cn.edu.jxnu.akka.actor.message.{COMMITTED_MESSAGE, COMMIT_MESSAGE, IndexedMessage}
+import cn.edu.jxnu.akka.actor.message.{COMMITTED_MESSAGE, COMMIT_MESSAGE, IndexedMessage, SEARCH_MESSAGE}
 import cn.edu.jxnu.akka.api.Indexer
 import org.slf4j.LoggerFactory
 
@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory
  *
  */
 class IndexingActor(indexer: Indexer) extends UntypedAbstractActor {
+
+    private val search = getContext().actorOf(Props.create(classOf[SearchActor]))
 
     private val logger = LoggerFactory.getLogger(classOf[IndexingActor])
 
@@ -28,15 +30,16 @@ class IndexingActor(indexer: Indexer) extends UntypedAbstractActor {
         logger.info("IndexingActor当前消息类型：" + message.getClass.getSimpleName)
         message match {
             //页面消息
-            case (content: PageContent, _) => {
+            case content: PageContent => {
                 indexer.index(content)
                 this.getSender() ! IndexedMessage(content.getPath())
             }
             //索引提交消息
-            case (_: COMMIT_MESSAGE, _) => {
+            case _: COMMIT_MESSAGE => {
                 indexer.commit()
                 //getSelf可以获取actor的ActorRef引用
                 this.getSender() ! COMMITTED_MESSAGE
+                this.search ! SEARCH_MESSAGE
             }
             //其他消息
             case _ => {

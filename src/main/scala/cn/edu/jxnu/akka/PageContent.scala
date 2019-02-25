@@ -16,5 +16,14 @@ case class PageContent(path: String, linksToFollow: List[String], title: String,
 
     def getPath(): String = path
 
+    protected var imagePath: List[String] = _
+
+    def getImagePaths(): List[String] = imagePath
+
+    def this(path: String, linksToFollow: List[String], title: String, content: String, imagePath: List[String]) = {
+        this(path, linksToFollow, title, content)
+        this.imagePath = imagePath
+    }
+
 
 }

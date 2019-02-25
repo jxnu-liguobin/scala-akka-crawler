@@ -45,7 +45,7 @@ abstract class Master(latch: CountDownLatch) extends UntypedAbstractActor {
 
             }
             //索引
-            case (indexedMessage: IndexedMessage, _) => {
+            case indexedMessage: IndexedMessage=> {
                 logger.info("====================index=================")
                 visitedPageStore.finished(indexedMessage.getPath)
                 if (visitedPageStore.isFinished())
