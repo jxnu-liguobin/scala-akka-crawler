@@ -13,6 +13,7 @@ class SimpleExecution extends Execution {
 
     override def downloadAndIndex(path: String, writer: IndexWriter): Unit = {
 
+        //TODO BUG
         val actorSystem: ActorSystem = ActorSystem.create
         val master: ActorRef = actorSystem.actorOf(Props.create(classOf[SimpleActorMaster],
             new HtmlParserPageRetriever(path), writer))

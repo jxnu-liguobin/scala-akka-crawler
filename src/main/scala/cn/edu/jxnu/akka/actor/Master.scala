@@ -35,7 +35,7 @@ abstract class Master(latch: CountDownLatch) extends UntypedAbstractActor {
                 visitedPageStore.addAll(content.getLinksToFollow())
                 if (visitedPageStore.isFinished()) {
                     //完成了则提交
-                    getIndexer() ! COMMIT_MESSAGE
+                    getIndexer() ! COMMIT_MESSAGE("完成索引")
                 } else {
                     //继续获取下一个页面
                     for (page <- visitedPageStore.getNextBatch()) {
@@ -45,15 +45,15 @@ abstract class Master(latch: CountDownLatch) extends UntypedAbstractActor {
 
             }
             //索引
-            case indexedMessage: IndexedMessage=> {
+            case indexedMessage: IndexedMessage => {
                 logger.info("====================index=================")
                 visitedPageStore.finished(indexedMessage.getPath)
                 if (visitedPageStore.isFinished())
-                    getIndexer() ! COMMIT_MESSAGE
+                    getIndexer() ! COMMIT_MESSAGE("完成索引")
 
             }
             //提交
-            case (COMMITTED_MESSAGE, _) => {
+            case _:COMMITTED_MESSAGE => {
                 logger.info("======================end================")
                 logger.info("Shutting down, finished")
                 getContext().system.terminate()

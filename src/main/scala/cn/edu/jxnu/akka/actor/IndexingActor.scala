@@ -38,8 +38,8 @@ class IndexingActor(indexer: Indexer) extends UntypedAbstractActor {
             case _: COMMIT_MESSAGE => {
                 indexer.commit()
                 //getSelf可以获取actor的ActorRef引用
-                this.getSender() ! COMMITTED_MESSAGE
-                this.search ! SEARCH_MESSAGE
+                this.getSender() ! COMMITTED_MESSAGE("完成-提交")
+                this.search ! SEARCH_MESSAGE("查询")
             }
             //其他消息
             case _ => {
