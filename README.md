@@ -9,7 +9,7 @@ https://github.com/fhopf/akka-crawler-example
 
 > 此代码库包含4个简单的Web爬虫程序示例，可执行main方法在cn.edu.jxnu.akka.actor.exec中：
 
-* 多actor，执行 FetchInParallelExecution（下面的actor仅做测试，废弃）
+* 多actor，执行 FetchInParallelExecution（本项目中，下面的actor仅做测试，已废弃）
 * 串行，执行 SequentialExecution
 * 单actor，执行SimpleExecution
 * 失败actor，执行FailingExecution
