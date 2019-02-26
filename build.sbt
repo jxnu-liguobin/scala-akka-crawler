@@ -1,4 +1,4 @@
-name := "akka-crawler-example-scala"
+name := "scala-akka-crawler"
 
 version := "1.0"
 

@@ -1,4 +1,4 @@
-package cn.edu.jxnu.akka
+package cn.edu.jxnu.akka.entity
 
 import java.util.List
 
@@ -16,14 +16,14 @@ case class PageContent(path: String, linksToFollow: List[String], title: String,
 
     def getPath(): String = path
 
-    protected var imagePath: List[String] = _
+    //图片src属性是个set
+    protected var imagePaths: Set[String] = _
 
-    def getImagePaths(): List[String] = imagePath
+    def getImagePaths(): Set[String] = imagePaths
 
-    def this(path: String, linksToFollow: List[String], title: String, content: String, imagePath: List[String]) = {
+    def this(path: String, linksToFollow: List[String], title: String, content: String, imagePath: Set[String]) = {
         this(path, linksToFollow, title, content)
-        this.imagePath = imagePath
+        this.imagePaths = imagePath
     }
-
 
 }

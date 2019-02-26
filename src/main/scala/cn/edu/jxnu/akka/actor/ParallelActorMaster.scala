@@ -6,6 +6,7 @@ import akka.actor.{ActorRef, Props}
 import akka.routing.RoundRobinPool
 import cn.edu.jxnu.akka.api.PageRetriever
 import cn.edu.jxnu.akka.api.impl.IndexerImpl
+import cn.edu.jxnu.akka.common.Constant
 import org.apache.lucene.index.IndexWriter
 import org.slf4j.LoggerFactory
 
@@ -25,7 +26,7 @@ class ParallelActorMaster(latch: CountDownLatch) extends Master(latch) {
         this(latch)
         //使用路由
         parser = getContext().actorOf(Props.create(classOf[PageParsingActor], pageRetriever).
-          withRouter(new RoundRobinPool(10)).withDispatcher("worker-dispatcher"))
+          withRouter(new RoundRobinPool(Constant.round_robin_pool_size)).withDispatcher("worker-dispatcher"))
         indexer = getContext().actorOf(Props.create(classOf[IndexingActor], new IndexerImpl(indexWriter)))
         logger.info("ParallelMaster constructor executed")
     }

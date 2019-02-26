@@ -3,7 +3,8 @@ package cn.edu.jxnu.akka.api.impl
 import java.io.{File, IOException}
 
 import cn.edu.jxnu.akka.api.Indexer
-import cn.edu.jxnu.akka.{IndexingException, PageContent}
+import cn.edu.jxnu.akka.entity.PageContent
+import cn.edu.jxnu.akka.{ExceptionConstant, IndexingException}
 import org.apache.lucene.document.{Document, Field}
 import org.apache.lucene.index.{CorruptIndexException, DirectoryReader, IndexWriter, IndexWriterConfig}
 import org.apache.lucene.search.{IndexSearcher, MatchAllDocsQuery, TopDocs}
@@ -28,8 +29,14 @@ class IndexerImpl(indexWriter: IndexWriter) extends Indexer {
         try {
             indexWriter.addDocument(toDocument(pageContent))
         } catch {
-            case ex: CorruptIndexException => throw new IndexingException(ex.getMessage)
-            case ex: IOException => throw new IndexingException(ex.getMessage)
+            case ex: CorruptIndexException => {
+                logger.error(ex.getMessage)
+                throw new IndexingException(ExceptionConstant.INDEX_MESSAGE)
+            }
+            case ex: IOException => {
+                logger.error(ex.getMessage)
+                throw new IndexingException(ExceptionConstant.INDEX_CODE_IO, ExceptionConstant.INDEX_MESSAGE_IO)
+            }
         }
     }
 
@@ -45,7 +52,7 @@ class IndexerImpl(indexWriter: IndexWriter) extends Indexer {
         } catch {
             case ex: Exception => {
                 logger.error(ex.getMessage)
-                throw new IndexingException(ex.getMessage)
+                throw new IndexingException(ExceptionConstant.INDEX_MESSAGE)
             }
         }
         doc
@@ -55,39 +62,54 @@ class IndexerImpl(indexWriter: IndexWriter) extends Indexer {
         try {
             indexWriter.commit()
         } catch {
-            case ex: CorruptIndexException => throw new IndexingException(ex.getMessage)
-            case ex: IOException => throw new IndexingException(ex.getMessage)
+            case ex: CorruptIndexException => {
+                logger.error(ex.getMessage)
+                throw new IndexingException(ExceptionConstant.INDEX_MESSAGE)
+            }
+            case ex: IOException => {
+                logger.error(ex.getMessage)
+                throw new IndexingException(ExceptionConstant.INDEX_CODE_IO, ExceptionConstant.INDEX_MESSAGE_IO)
+            }
         }
     }
 
     override def close() {
         try {
-            indexWriter.close()
+            if (indexWriter != null) {
+                indexWriter.close()
+            }
         } catch {
-            case ex: CorruptIndexException => throw new IndexingException(ex.getMessage)
-            case ex: IOException => throw new IndexingException(ex.getMessage)
+            case ex: CorruptIndexException => {
+                logger.error(ex.getMessage)
+                throw new IndexingException(ExceptionConstant.INDEX_MESSAGE)
+            }
+            case ex: IOException => {
+                logger.error(ex.getMessage)
+                throw new IndexingException(ExceptionConstant.INDEX_CODE_IO, ExceptionConstant.INDEX_MESSAGE_IO)
+            }
         }
     }
 
     override def searchAll(indexDir: File): Unit = {
         try {
-            //TODO 异步，这里直接读取，是空记录
-            logger.info("search class :" + this.getClass().getSimpleName())
+
+            logger.info("Search class is :" + this.getClass().getSimpleName())
             //获取搜索器
             val searcher = IndexerImpl.openSearcher(indexDir)
             //匹配所有文档的查询。前100条数据
             val result: TopDocs = searcher.search(new MatchAllDocsQuery(), 100)
             //查询的命中总数。
-            logger.info("Found {} results", result.totalHits)
+            logger.info("Found {} results ", result.totalHits)
             //遍历命中文件的编号，通过搜索器查询到原文档，并输出id
             for (scoreDoc <- result.scoreDocs) {
                 val doc: Document = searcher.doc(scoreDoc.doc)
-                logger.debug(doc.get("id"))
+                logger.info(doc.get("id"))
             }
             close()
         } catch {
             case ex: Exception => {
-                new IndexingException(IndexingException.INDEX_CODE_SEARCH_ERROR, ex.getMessage)
+                logger.error(ex.getMessage, ex.getStackTrace)
+                new IndexingException(ExceptionConstant.INDEX_MESSAGE)
             }
         }
     }
@@ -105,7 +127,6 @@ object IndexerImpl {
     def openWriter(indexDir: File): IndexWriter = {
         val dir = FSDirectory.open(indexDir)
         val config = new IndexWriterConfig(Version.LUCENE_47, new IKAnalyzer(true))
-        //        config.setOpenMode(OpenMode.CREATE_OR_APPEND)
         new IndexWriter(dir, config)
     }
 

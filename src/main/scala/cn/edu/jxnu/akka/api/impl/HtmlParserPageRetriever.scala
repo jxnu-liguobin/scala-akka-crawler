@@ -1,14 +1,17 @@
 package cn.edu.jxnu.akka.api.impl
 
-import java.util._
+import java.util
 
+import cn.edu.jxnu.akka.RetrievalException
 import cn.edu.jxnu.akka.api.PageRetriever
-import cn.edu.jxnu.akka.{PageContent, RetrievalException}
+import cn.edu.jxnu.akka.entity.PageContent
 import org.htmlparser.tags.{BodyTag, ImageTag, LinkTag, TitleTag}
 import org.htmlparser.util.ParserException
 import org.htmlparser.visitors.NodeVisitor
 import org.htmlparser.{Parser, Tag}
 import org.slf4j.LoggerFactory
+
+import scala.collection.immutable.HashSet
 
 /**
  * 具体的页面解析实现
@@ -45,10 +48,11 @@ class HtmlParserPageRetriever(baseUrl: String) extends PageRetriever {
      */
     class PageContentVisitor(recursive: Boolean) extends NodeVisitor(recursive) {
 
-        private val linksToVisit: List[String] = new ArrayList[String]()
+        private val linksToVisit: util.ArrayList[String] = new util.ArrayList[String]()
+        private val imagePaths: Set[String] = new HashSet[String]()
+
         private var content: String = _
         private var title: String = _
-        private var imagePath: List[String] = new ArrayList[String]()
         private var baseUrl: String = _
         private var currentUrl: String = _
 
@@ -75,8 +79,8 @@ class HtmlParserPageRetriever(baseUrl: String) extends PageRetriever {
                     content = bodyTag.toPlainTextString()
                 }
                 case imageTag: ImageTag => {
-                    if (!imagePath.contains(imageTag.getAttribute("src")))
-                        imagePath.add(imageTag.getAttribute("src"))
+                    if (!imagePaths.contains(imageTag.getAttribute("src")))
+                        imagePaths.+(imageTag.getAttribute("src"))
                 }
                 case _ => {
                     logger.warn("Unknown type of label, unrecognizable")
@@ -86,9 +90,9 @@ class HtmlParserPageRetriever(baseUrl: String) extends PageRetriever {
 
         def getContent(): PageContent = new PageContent(currentUrl, linksToVisit, title, content)
 
-        def getContentAndImages(): PageContent = new PageContent(currentUrl, linksToVisit, title, content, imagePath)
+        def getContentAndImages(): PageContent = new PageContent(currentUrl, linksToVisit, title, content, imagePaths)
 
-        def getImages() = this.imagePath
+        def getImages() = this.imagePaths
 
         private def isProbablyHtml(link: String): Boolean = link.startsWith("http://") ||
           link.startsWith("https://") || link.endsWith("/")

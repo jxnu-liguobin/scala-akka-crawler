@@ -1,9 +1,10 @@
 package cn.edu.jxnu.akka.actor
 
 import akka.actor.{Props, UntypedAbstractActor}
-import cn.edu.jxnu.akka.PageContent
-import cn.edu.jxnu.akka.actor.message.{COMMITTED_MESSAGE, COMMIT_MESSAGE, IndexedMessage, SEARCH_MESSAGE}
+import cn.edu.jxnu.akka.actor.message.{CommitMessage, CommittedMessage, IndexedMessage, SearchMessage}
 import cn.edu.jxnu.akka.api.Indexer
+import cn.edu.jxnu.akka.common.Constant
+import cn.edu.jxnu.akka.entity.PageContent
 import org.slf4j.LoggerFactory
 
 /**
@@ -26,8 +27,8 @@ class IndexingActor(indexer: Indexer) extends UntypedAbstractActor {
      */
     override def onReceive(message: Any) = {
 
-        logger.info("indexing,actor is:" + self)
-        logger.info("IndexingActor当前消息类型：" + message.getClass.getSimpleName)
+        logger.info("Indexing actor is:" + self)
+        logger.info("IndexingActor type is：" + message.getClass.getSimpleName)
         message match {
             //页面消息
             case content: PageContent => {
@@ -35,11 +36,11 @@ class IndexingActor(indexer: Indexer) extends UntypedAbstractActor {
                 this.getSender() ! IndexedMessage(content.getPath())
             }
             //索引提交消息
-            case _: COMMIT_MESSAGE => {
+            case _: CommitMessage => {
                 indexer.commit()
                 //getSelf可以获取actor的ActorRef引用
-                this.getSender() ! COMMITTED_MESSAGE("完成-提交")
-                this.search ! SEARCH_MESSAGE("查询")
+                this.getSender() ! CommittedMessage(Constant.message_committed)
+                this.search ! SearchMessage(Constant.message_search_all)
             }
             //其他消息
             case _ => {

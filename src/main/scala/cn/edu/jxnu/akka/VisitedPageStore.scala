@@ -1,14 +1,16 @@
 package cn.edu.jxnu.akka
 
+import java.util.List
+
 import scala.collection.JavaConversions._
 import scala.collection.mutable._
-import java.util.List
 
 /**
  * 存储需要访问的页面
  */
 class VisitedPageStore {
 
+    //TODO 内存，需要使用队列
     //准备去访问的
     private val pagesToVisit: Set[String] = new HashSet[String]()
     //所有页面

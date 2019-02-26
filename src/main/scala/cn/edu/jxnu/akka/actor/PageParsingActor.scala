@@ -3,8 +3,8 @@ package cn.edu.jxnu.akka.actor
 import java.util.Optional
 
 import akka.actor.{UntypedAbstractActor, actorRef2Scala}
-import cn.edu.jxnu.akka.PageContent
 import cn.edu.jxnu.akka.api.PageRetriever
+import cn.edu.jxnu.akka.entity.PageContent
 import org.slf4j.LoggerFactory
 
 /**
@@ -16,13 +16,12 @@ class PageParsingActor(pageRetriever: PageRetriever) extends UntypedAbstractActo
 
     override def onReceive(message: Any) = {
 
-        logger.info("page parsing,actor is:" + self)
-        logger.info("PageParsingActor当前消息类型：" + message.getClass.getSimpleName)
+        logger.info("Page parsing actor is:" + self)
+        logger.info("PageParsingActor type is：" + message.getClass.getSimpleName)
         message match {
             case msg: String => {
                 val content: PageContent = pageRetriever.fetchPageContent(msg)
                 sender ! (content, self)
-                logger.info("page parsing,actor is:" + self)
             }
             case _ => unhandled(message)
         }

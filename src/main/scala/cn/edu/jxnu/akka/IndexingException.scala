@@ -5,16 +5,11 @@ package cn.edu.jxnu.akka
  */
 class IndexingException(val message: String) extends RuntimeException(message) {
 
-    var code: Int = IndexingException.INDEX_CODE_ERROR
+    var code: Int = ExceptionConstant.INDEX_CODE
 
     def this(code: Int, message: String) = {
         this(message)
         this.code = code
     }
 
-}
-
-object IndexingException {
-    final val INDEX_CODE_ERROR: Int = 1000
-    final val INDEX_CODE_SEARCH_ERROR: Int = 1001
 }

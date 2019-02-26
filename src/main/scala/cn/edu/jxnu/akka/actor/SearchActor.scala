@@ -1,7 +1,7 @@
 package cn.edu.jxnu.akka.actor
 
 import akka.actor.UntypedAbstractActor
-import cn.edu.jxnu.akka.actor.message.SEARCH_MESSAGE
+import cn.edu.jxnu.akka.actor.message.SearchMessage
 import cn.edu.jxnu.akka.api.impl.{Executor, IndexerImpl}
 import org.slf4j.LoggerFactory
 
@@ -15,11 +15,11 @@ class SearchActor extends UntypedAbstractActor {
 
     override def onReceive(message: Any) = {
 
-        logger.info("indexing search,actor is:" + self)
-        logger.info("SearchActor当前消息类型：" + message.getClass.getSimpleName)
+        logger.info("Indexing search actor is:" + self)
+        logger.info("SearchActor type is：" + message.getClass.getSimpleName)
         message match {
             //收到索引提交消息就查询出数据
-            case _: SEARCH_MESSAGE => {
+            case _: SearchMessage => {
                 val imp = new IndexerImpl()
                 imp.searchAll(Executor.indexDir)
             }

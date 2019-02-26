@@ -2,8 +2,9 @@ package cn.edu.jxnu.akka.api.impl
 
 import java.io.{File, IOException}
 
-import cn.edu.jxnu.akka.RetrievalException
 import cn.edu.jxnu.akka.api.Execution
+import cn.edu.jxnu.akka.common.Constant
+import cn.edu.jxnu.akka.{IndexingException, RetrievalException}
 import org.apache.lucene.index._
 import org.apache.lucene.search.IndexSearcher
 import org.perf4j.{LoggingStopWatch, StopWatch}
@@ -15,10 +16,7 @@ import org.slf4j.LoggerFactory
  */
 class Executor(execution: Execution) {
 
-    final val INDEX_PATH = "D:/git_project/akka-crawler-example/index"
-
     //传入继承了Execution的类
-
     private val logger = LoggerFactory.getLogger(classOf[Executor])
 
     //Lucene索引
@@ -31,9 +29,10 @@ class Executor(execution: Execution) {
      * @param path
      */
     def execute(path: String) = {
+
         //Lucene索引
         try {
-            Executor.indexDir = new File(INDEX_PATH, "index-" + System.currentTimeMillis())
+            Executor.indexDir = new File(Constant.index_path, "index-" + System.currentTimeMillis())
             writer = IndexerImpl.openWriter(Executor.indexDir)
 
             /**
@@ -46,43 +45,30 @@ class Executor(execution: Execution) {
             //首次执行不执行commit会报错
             writer.commit()
             stopWatch.stop(execution.getClass().getSimpleName())
-//            //TODO 异步，这里直接读取，是空记录
-            //            logger.info("exec:" + execution.getClass().getSimpleName())
-            //            //获取搜索器
-            //            searcher = IndexerImpl.openSearcher(indexDir)
-            //            //匹配所有文档的查询。前100条数据
-            //            //            val  multiFieldQuery = MultiFieldQueryParser.parse(keyWord, fields, clauses, analyzer)
-            //            val result: TopDocs = searcher.search(new MatchAllDocsQuery(), 100)
-            //            //查询的命中总数。
-            //            logger.info("Found {} results", result.totalHits)
-            //            //遍历命中文件的编号，通过搜索器查询到原文档，并输出id
-            //            for (scoreDoc <- result.scoreDocs) {
-            //                val doc: Document = searcher.doc(scoreDoc.doc)
-            //                logger.debug(doc.get("id"))
-            //            }
-
         } catch {
-            case ex: IOException =>
-                logger.error(ex.getMessage(), ex)
+            case ie: IndexingException => {
+                logger.error(ie.getMessage())
                 if (writer != null) {
                     try {
                         writer.rollback()
                     } catch {
                         case ex1: IOException =>
                             logger.error(ex1.getMessage(), ex1)
-
                     }
                 }
+            }
+            case re: RetrievalException => {
+                logger.error(re.getMessage())
+            }
         } finally {
             if (writer != null) {
                 try {
                     writer.close()
                 } catch {
                     case ex: CorruptIndexException => {
-                        logger.error(ex.getMessage(), ex)
-                        throw new RetrievalException(ex.getMessage)
+                        logger.error(ex.getMessage())
                     }
-                    case ex: IOException => logger.error(ex.getMessage(), ex)
+                    case ex: IOException => logger.error(ex.getMessage)
                 }
             }
         }

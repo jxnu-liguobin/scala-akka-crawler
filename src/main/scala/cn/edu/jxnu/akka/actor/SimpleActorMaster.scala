@@ -25,9 +25,9 @@ class SimpleActorMaster(latch: CountDownLatch) extends Master(latch) {
         this(null)
     }
 
-    def this(pageRetriever: PageRetriever, indexWriter: IndexWriter) = {
+    def this(pageRetriever: PageRetriever, indexWriter: IndexWriter, countDownLatch: CountDownLatch) = {
 
-        this(null)
+        this(countDownLatch)
         this.indexer = getContext().actorOf(Props.create(classOf[IndexingActor], new IndexerImpl(indexWriter)))
         //使用无类型角色工厂建造解析器
         this.parser = getContext().actorOf(Props.create(classOf[PageParsingActor], pageRetriever))

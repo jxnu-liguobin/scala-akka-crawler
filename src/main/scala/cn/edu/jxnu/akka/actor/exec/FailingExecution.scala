@@ -1,5 +1,7 @@
 package cn.edu.jxnu.akka.actor.exec
 
+import java.util.concurrent.CountDownLatch
+
 import akka.actor.{ActorSystem, Props}
 import cn.edu.jxnu.akka.actor.ParallelActorMaster
 import cn.edu.jxnu.akka.api.Execution
@@ -8,14 +10,23 @@ import org.apache.lucene.index.IndexWriter
 
 /**
  * 失败
+ * 仅测试用
  */
+@Deprecated
 class FailingExecution extends Execution {
 
     def downloadAndIndex(path: String, writer: IndexWriter): Unit = {
         val actorSystem = ActorSystem.create
-        val master = actorSystem.actorOf(Props.create(classOf[ParallelActorMaster], new ChaosMonkeyPageRetriever(path), writer))
+        val countDownLatch = new CountDownLatch(10)
+        val master = actorSystem.actorOf(Props.create(classOf[ParallelActorMaster], new ChaosMonkeyPageRetriever(path),
+            writer, countDownLatch))
         master ! path
-        //        actorSystem.terminate()
+        try {
+            countDownLatch.await()
+            actorSystem.terminate();
+        } catch {
+            case ex: InterruptedException => throw new IllegalStateException(ex)
+        }
     }
 }
 

@@ -3,6 +3,7 @@ package cn.edu.jxnu.akka
 import java.util
 
 import cn.edu.jxnu.akka.api.impl.IndexerImpl
+import cn.edu.jxnu.akka.entity.PageContent
 import org.apache.lucene.index._
 import org.apache.lucene.search.{IndexSearcher, TermQuery, TopDocs}
 import org.apache.lucene.store.{Directory, RAMDirectory}

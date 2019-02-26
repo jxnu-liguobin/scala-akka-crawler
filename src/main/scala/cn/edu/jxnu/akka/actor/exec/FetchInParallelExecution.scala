@@ -6,6 +6,7 @@ import akka.actor.{ActorSystem, Props}
 import cn.edu.jxnu.akka.actor.ParallelActorMaster
 import cn.edu.jxnu.akka.api.Execution
 import cn.edu.jxnu.akka.api.impl.{Executor, HtmlParserPageRetriever}
+import cn.edu.jxnu.akka.common.Constant
 import org.apache.lucene.index.IndexWriter
 
 /**
@@ -15,7 +16,7 @@ class FetchInParallelExecution extends Execution {
 
     override def downloadAndIndex(path: String, writer: IndexWriter) = {
         val actorSystem = ActorSystem.create()
-        val countDownLatch = new CountDownLatch(10)
+        val countDownLatch = new CountDownLatch(Constant.count_latch_size)
         val master = actorSystem.actorOf(Props.create(classOf[ParallelActorMaster], new HtmlParserPageRetriever(path),
             writer, countDownLatch))
         master ! (path)
@@ -34,6 +35,6 @@ object FetchInParallelExecution extends App {
     override def main(args: Array[String]) {
         val execution = new FetchInParallelExecution()
         val exec = new Executor(execution)
-        exec.execute("http://www.synyx.de/")
+        exec.execute("http://www.baidu.com/")
     }
 }

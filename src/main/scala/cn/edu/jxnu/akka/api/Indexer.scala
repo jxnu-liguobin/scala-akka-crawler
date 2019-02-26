@@ -2,7 +2,7 @@ package cn.edu.jxnu.akka.api
 
 import java.io.File
 
-import cn.edu.jxnu.akka.PageContent
+import cn.edu.jxnu.akka.entity.PageContent
 
 /**
  * 索引器
