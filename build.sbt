@@ -21,3 +21,6 @@ libraryDependencies += "org.slf4j" % "slf4j-simple" % "1.7.22"
 libraryDependencies += "junit" % "junit" % "4.12"
 
 libraryDependencies += "com.janeluo" % "ikanalyzer" % "2012_u6"
+
+libraryDependencies += "org.jsoup" % "jsoup" % "1.10.3"
+

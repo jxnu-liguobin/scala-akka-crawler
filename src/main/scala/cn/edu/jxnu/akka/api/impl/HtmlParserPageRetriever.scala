@@ -8,7 +8,7 @@ import org.htmlparser.util.ParserException
 import org.slf4j.LoggerFactory
 
 /**
- * 具体的页面解析实现
+ * 具体的页面爬取器实现
  *
  */
 class HtmlParserPageRetriever(baseUrl: String) extends PageRetriever {

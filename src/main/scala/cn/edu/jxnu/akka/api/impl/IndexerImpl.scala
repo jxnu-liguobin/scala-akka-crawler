@@ -15,7 +15,6 @@ import org.wltea.analyzer.lucene.IKAnalyzer
 
 /**
  * 索引器实现
- *
  */
 class IndexerImpl(indexWriter: IndexWriter) extends Indexer {
 

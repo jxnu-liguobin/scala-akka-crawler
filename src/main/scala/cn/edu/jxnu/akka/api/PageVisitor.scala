@@ -5,8 +5,7 @@ import java.util.List
 import cn.edu.jxnu.akka.entity.PageContent
 
 /**
- * @author 梦境迷离
- * @time 2019-02-27
+ * 页面访问器接口
  */
 trait PageVisitor {
 
