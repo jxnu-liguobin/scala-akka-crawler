@@ -27,7 +27,7 @@ class IndexerImpl(indexWriter: IndexWriter) extends Indexer {
 
     override def index(pageContent: PageContent) {
         try {
-            indexWriter.addDocument(toDocument(pageContent))
+            indexWriter.addDocument(IndexerImpl.toDocument(pageContent))
         } catch {
             case ex: CorruptIndexException => {
                 logger.error(ex.getMessage)
@@ -38,24 +38,6 @@ class IndexerImpl(indexWriter: IndexWriter) extends Indexer {
                 throw new IndexingException(ExceptionConstant.INDEX_CODE_IO, ExceptionConstant.INDEX_MESSAGE_IO)
             }
         }
-    }
-
-    //将页面转化为文档
-    private def toDocument(content: PageContent): Document = {
-        val doc = new Document()
-        //索引三个字段
-        try {
-            doc.add(new Field("id", content.getPath(), Field.Store.YES, Field.Index.NOT_ANALYZED))
-            doc.add(new Field("title", content.getTitle(), Field.Store.YES, Field.Index.ANALYZED))
-            //不存
-            doc.add(new Field("content", content.getContent(), Field.Store.NO, Field.Index.ANALYZED))
-        } catch {
-            case ex: Exception => {
-                logger.error(ex.getMessage)
-                throw new IndexingException(ExceptionConstant.INDEX_MESSAGE)
-            }
-        }
-        doc
     }
 
     override def commit() {
@@ -140,5 +122,22 @@ object IndexerImpl {
         val dir = FSDirectory.open(indexDir)
         val directoryReader = DirectoryReader.open(dir)
         new IndexSearcher(directoryReader)
+    }
+
+    //将页面转化为文档
+    def toDocument(content: PageContent): Document = {
+        val doc = new Document()
+        //索引三个字段
+        try {
+            doc.add(new Field("id", content.getPath(), Field.Store.YES, Field.Index.NOT_ANALYZED))
+            doc.add(new Field("title", content.getTitle(), Field.Store.YES, Field.Index.ANALYZED))
+            //不存
+            doc.add(new Field("content", content.getContent(), Field.Store.NO, Field.Index.ANALYZED))
+        } catch {
+            case ex: Exception => {
+                throw new IndexingException(ExceptionConstant.INDEX_MESSAGE)
+            }
+        }
+        doc
     }
 }

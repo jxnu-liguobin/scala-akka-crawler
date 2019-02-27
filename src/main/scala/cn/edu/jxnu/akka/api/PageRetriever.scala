@@ -3,9 +3,10 @@ package cn.edu.jxnu.akka.api
 import cn.edu.jxnu.akka.entity.PageContent
 
 /**
- * 页面解析接口定义
+ * 页面解析器接口
  */
 abstract class PageRetriever {
+
     /**
      * 获取content内容
      *
