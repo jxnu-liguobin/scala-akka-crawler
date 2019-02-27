@@ -78,6 +78,7 @@ class HtmlParserPageRetriever(baseUrl: String) extends PageRetriever {
                 case bodyTag: BodyTag => {
                     content = bodyTag.toPlainTextString()
                 }
+                    //TODO 不通用
                 case imageTag: ImageTag => {
                     if (!imagePaths.contains(imageTag.getAttribute("src")))
                         imagePaths.+(imageTag.getAttribute("src"))

@@ -6,6 +6,7 @@ import cn.edu.jxnu.akka.{ExceptionConstant, RetrievalException}
 /**
  * 随机
  */
+@Deprecated
 class ChaosMonkeyPageRetriever(baseUrl: String) extends HtmlParserPageRetriever(baseUrl) {
 
     override def fetchPageContent(url: String): PageContent = {
