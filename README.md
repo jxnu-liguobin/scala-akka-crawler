@@ -8,12 +8,6 @@
 * http://blog.florian-hopf.de/2012/08/getting-rid-of-synchronized-using-akka.html
 * https://github.com/fhopf/akka-crawler-example
 * 原项目包含4个简单的Web爬虫程序示例，可执行main方法在cn.edu.jxnu.akka.actor.exec中
-
-        
-    多actor，执行 FetchInParallelExecution
-    串行，执行 SequentialExecution
-    单actor，执行SimpleExecution
-    失败actor，执行FailingExecution
         
 * 本项目对引用的组件的版本、语法、过期接口进行了优化处理并解决了已知存在的BUG
 * 本项目中只对FetchInParallelExecution做拓展，继续开发，其他废弃。
@@ -25,9 +19,9 @@
 * scala:2.11.8
 * lucene:4.7.2
 * akka-actor:2.5.5
-* htmlparser:2.1
-* ikanalyzer:2012_u6
-* jsoup:1.10.3
+* htmlparser:2.1 准备废弃
+* ikanalyzer:2012_u6 可选
+* jsoup:1.10.3 定义新的接口
 
 > 运行
 
