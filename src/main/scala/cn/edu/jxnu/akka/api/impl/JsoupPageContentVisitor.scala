@@ -1,55 +1,104 @@
 package cn.edu.jxnu.akka.api.impl
 
 import java.util
+import java.util.List
 
-import cn.edu.jxnu.akka.api.PageVisitor
+import cn.edu.jxnu.akka.common.util.ValidationUrl
 import cn.edu.jxnu.akka.entity.PageContent
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Node
+import org.jsoup.select.{Elements, NodeVisitor}
+import org.slf4j.LoggerFactory
+
+import scala.collection.JavaConversions
 
 /**
  * 使用jsoup的新api的页面访问器
  */
-class JsoupPageContentVisitor extends PageVisitor {
+class JsoupPageContentVisitor(depth: Int) extends NodeVisitor {
 
+    private val logger = LoggerFactory.getLogger(classOf[JsoupPageContentVisitor])
+    private val linksToVisit: util.ArrayList[String] = new util.ArrayList[String]()
+    private val imagePaths: List[String] = new util.ArrayList[String]()
+
+    private var content: String = _
+    private var title: String = _
+    private var baseUrl: String = _
+    private var currentUrl: String = _
 
     /**
-     * 获得标题
+     * 深度暂时没有用
+     *
+     * @param depth
+     * @param baseUrl
+     * @param currentUrl
+     */
+    def this(depth: Int, baseUrl: String, currentUrl: String) {
+        this(depth)
+        this.baseUrl = baseUrl
+        this.currentUrl = currentUrl
+    }
+
+    /**
+     * 需要重写
+     *
+     * @param node
+     * @param depth
+     */
+    override def head(node: Node, depth: Int): Unit = {}
+
+    /**
+     * 需要重写
+     *
+     * @param node
+     * @param depth
+     */
+    override def tail(node: Node, depth: Int): Unit = {}
+
+    /**
+     * 目前只是简单解析,这样效率极低
      *
      * @return
      */
-    override def getTitle(): String = ???
+    def parse(): PageContent = {
+        val document = Jsoup.connect(this.baseUrl).get();
+        val emements: Elements = document.getAllElements
+        for (ele <- JavaConversions.asScalaBuffer(emements)) {
+            ele.tagName() match {
+                case "a" => {
+                    //TODO 会爆内存，需要队列
+                    if (ValidationUrl.vaildUrl(ele.absUrl("href"))) {
+                        logger.info("Using link pointing to {}", ele.absUrl("href"))
+                        linksToVisit.add(ele.absUrl("href"))
+                    } else {
+                        logger.info("Skipping link pointing to {}", ele.absUrl("href"))
+                    }
+                }
+                case "body" => {
+                    content = ele.text()
+                }
+                case "title" => {
+                    title = ele.text()
+                }
+                case "img" => {
+                    val image = ele.attr("src")
+                    imagePaths.add(image)
+                }
+                case _ => {
+                    logger.warn("Unknown type of label, unrecognizable")
+                }
+            }
+        }
+        getPageContentWithImages
+    }
 
-    /**
-     * 获得内容
-     *
-     * @return
-     */
-    override def getBody(): String = ???
+    def getTitle(): String = title
 
-    /**
-     * 获得图片地址
-     *
-     * @return
-     */
-    override def getImages(): util.List[String] = ???
+    def getBody(): String = content
 
-    /**
-     * 获取含有图片地址的页面内容
-     *
-     * @return
-     */
-    override def getPageContentWithImages(): PageContent = ???
+    def getPageContentWithImages(): PageContent = new PageContent(currentUrl, linksToVisit, title, content, imagePaths)
 
-    /**
-     * 获取没有图片链接地址的页面内容
-     *
-     * @return
-     */
-    override def getPageContentWithoutImages(): PageContent = ???
+    def getPageContentWithoutImages(): PageContent = PageContent(currentUrl, linksToVisit, title, content)
 
-    /**
-     * 是否需要加入爬取链接
-     *
-     * @return
-     */
-    override def isProbablyHtml(link: String): Boolean = ???
+    def getImages(): List[String] = this.imagePaths
 }

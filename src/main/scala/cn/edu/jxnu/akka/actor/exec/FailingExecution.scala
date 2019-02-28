@@ -12,7 +12,7 @@ import org.apache.lucene.index.IndexWriter
  * 失败
  * 仅测试用
  */
-@Deprecated
+@deprecated
 class FailingExecution extends Execution {
 
     def downloadAndIndex(path: String, writer: IndexWriter): Unit = {

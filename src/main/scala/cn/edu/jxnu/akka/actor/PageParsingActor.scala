@@ -20,7 +20,7 @@ class PageParsingActor(pageRetriever: PageRetriever) extends UntypedAbstractActo
         logger.info("PageParsingActor type is：" + message.getClass.getSimpleName)
         message match {
             case msg: String => {
-                val content: PageContent = pageRetriever.fetchPageContent(msg)
+                val content: PageContent = pageRetriever.fetchPageContentWithJsoup(msg)
                 sender ! (content, self)
             }
             case _ => unhandled(message)

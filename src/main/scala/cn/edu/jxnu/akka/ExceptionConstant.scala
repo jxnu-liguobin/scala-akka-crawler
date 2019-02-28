@@ -19,6 +19,7 @@ object ExceptionConstant {
 
     final val ETRIEVAL_CODE: Int = 2000
     final val ETRIEVAL_MESSAGE = "爬页面错误"
+    final val ETRIEVAL_MESSAGE_JSOUP = "Jsoup爬页面错误"
 
 
     final val ETRIEVAL_CODE_MONKEY: Int = 2001

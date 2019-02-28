@@ -6,8 +6,7 @@ import cn.edu.jxnu.akka.api.impl.{Executor, IndexerImpl}
 import org.slf4j.LoggerFactory
 
 /**
- * @author 梦境迷离
- * @time 2019-02-25
+ * 搜索
  */
 class SearchActor extends UntypedAbstractActor {
 

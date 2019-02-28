@@ -9,7 +9,7 @@ import org.apache.lucene.index.IndexWriter
  * 顺序执行器，无actor
  * 仅测试用
  */
-@Deprecated
+@deprecated
 class SequentialExecution extends Execution {
 
     override def downloadAndIndex(path: String, writer: IndexWriter) = {

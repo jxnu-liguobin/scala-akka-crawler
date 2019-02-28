@@ -14,4 +14,12 @@ abstract class PageRetriever {
      * @return
      */
     def fetchPageContent(url: String): PageContent
+
+    /**
+     * 使用jsoup
+     *
+     * @param url
+     * @return
+     */
+    def fetchPageContentWithJsoup(url: String): PageContent = null
 }

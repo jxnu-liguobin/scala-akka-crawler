@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory
 
 /**
  * 并发的主actor执行类
- *
  */
 class ParallelActorMaster(latch: CountDownLatch) extends Master(latch) {
 

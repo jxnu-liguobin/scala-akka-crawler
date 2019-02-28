@@ -23,7 +23,7 @@ class HtmlParserPageRetriever(baseUrl: String) extends PageRetriever {
      */
     override def fetchPageContent(url: String): PageContent = {
 
-        logger.info("Fetching {}", url)
+        logger.info("Use htmlparser Fetching {}", url)
         try {
 
             val parser: Parser = new Parser(url)
@@ -31,6 +31,7 @@ class HtmlParserPageRetriever(baseUrl: String) extends PageRetriever {
             val visitor = new PageContentVisitor(true, baseUrl, url)
             parser.visitAllNodesWith(visitor)
             visitor.getPageContentWithImages()
+
 
         } catch {
             case ex: ParserException => {
@@ -40,5 +41,18 @@ class HtmlParserPageRetriever(baseUrl: String) extends PageRetriever {
         }
     }
 
+    override def fetchPageContentWithJsoup(url: String): PageContent = {
+        logger.info("Use jsoup Fetching {}", url)
+        try {
+
+            val jsoupPageContentVisitor = new JsoupPageContentVisitor(1, baseUrl, url)
+            jsoupPageContentVisitor.parse()
+        } catch {
+            case ex: ParserException => {
+                logger.error(ex.getMessage)
+                throw new RetrievalException(ExceptionConstant.ETRIEVAL_MESSAGE_JSOUP)
+            }
+        }
+    }
 
 }
