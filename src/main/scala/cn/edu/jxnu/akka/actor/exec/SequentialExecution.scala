@@ -14,7 +14,7 @@ class SequentialExecution extends Execution {
 
     override def downloadAndIndex(path: String, writer: IndexWriter) = {
 
-        val pageStore: VisitedPageStore = new VisitedPageStore()
+        val pageStore = VisitedPageStore
         //存储待访问页面链接
         pageStore.add(path)
         //创建索引器

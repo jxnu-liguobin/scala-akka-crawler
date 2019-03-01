@@ -8,7 +8,7 @@ import scala.collection.mutable._
 /**
  * 存储需要访问的页面
  */
-class VisitedPageStore {
+object VisitedPageStore {
 
     //TODO 内存，需要使用队列
     //准备去访问的

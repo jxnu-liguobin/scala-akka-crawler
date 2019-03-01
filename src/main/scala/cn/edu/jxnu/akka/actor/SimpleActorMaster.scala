@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory
  *
  * @param latch Java并发门阀，用于限定并行数
  */
+@deprecated
 class SimpleActorMaster(latch: CountDownLatch) extends Master(latch) {
 
     private val logger = LoggerFactory.getLogger(classOf[SimpleActorMaster])

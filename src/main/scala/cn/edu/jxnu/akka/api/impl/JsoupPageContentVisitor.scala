@@ -58,7 +58,7 @@ class JsoupPageContentVisitor(depth: Int) extends NodeVisitor {
     override def tail(node: Node, depth: Int): Unit = {}
 
     /**
-     * 目前只是简单解析,这样效率极低
+     * 目前只是简单解析第一层
      *
      * @return
      */

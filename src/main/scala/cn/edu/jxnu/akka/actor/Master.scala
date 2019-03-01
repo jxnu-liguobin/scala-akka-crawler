@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory
 abstract class Master(latch: CountDownLatch) extends UntypedAbstractActor {
 
     private val logger = LoggerFactory.getLogger(classOf[Master])
-    private val visitedPageStore = new VisitedPageStore()
+    private val visitedPageStore = VisitedPageStore
 
     override def onReceive(message: Any) = {
 
