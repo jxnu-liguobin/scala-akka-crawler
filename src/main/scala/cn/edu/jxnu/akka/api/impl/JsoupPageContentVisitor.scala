@@ -3,6 +3,7 @@ package cn.edu.jxnu.akka.api.impl
 import java.util
 import java.util.List
 
+import cn.edu.jxnu.akka.common.CollectTag
 import cn.edu.jxnu.akka.common.util.ValidationUrl
 import cn.edu.jxnu.akka.entity.PageContent
 import org.jsoup.Jsoup
@@ -25,6 +26,7 @@ class JsoupPageContentVisitor(depth: Int) extends NodeVisitor {
     private var title: String = _
     private var baseUrl: String = _
     private var currentUrl: String = _
+    private var preContent: String = _
 
     /**
      * 深度暂时没有用
@@ -65,7 +67,7 @@ class JsoupPageContentVisitor(depth: Int) extends NodeVisitor {
         val emements: Elements = document.getAllElements
         for (ele <- JavaConversions.asScalaBuffer(emements)) {
             ele.tagName() match {
-                case "a" => {
+                case CollectTag.Tag_A => {
                     //TODO 会爆内存，需要队列
                     if (ValidationUrl.vaildUrl(ele.absUrl("href"))) {
                         logger.info("Using link pointing to {}", ele.absUrl("href"))
@@ -74,15 +76,18 @@ class JsoupPageContentVisitor(depth: Int) extends NodeVisitor {
                         logger.info("Skipping link pointing to {}", ele.absUrl("href"))
                     }
                 }
-                case "body" => {
+                case CollectTag.Tag_Body => {
                     content = ele.text()
                 }
-                case "title" => {
+                case CollectTag.Tag_Title => {
                     title = ele.text()
                 }
-                case "img" => {
+                case CollectTag.Tag_Img => {
                     val image = ele.attr("src")
                     imagePaths.add(image)
+                }
+                case CollectTag.Tag_Pre => {
+                    preContent = ele.text()
                 }
                 case _ => {
                     logger.warn("Unknown type of label, unrecognizable")

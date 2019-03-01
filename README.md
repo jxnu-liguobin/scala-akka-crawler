@@ -10,7 +10,7 @@
 * 原项目包含4个简单的Web爬虫程序示例，可执行main方法在cn.edu.jxnu.akka.actor.exec中
         
 * 本项目对引用的组件的版本、语法、过期接口进行了优化处理并解决了已知存在的BUG
-* 本项目中只对FetchInParallelExecution做拓展，继续开发，其他废弃。
+* 本项目中只对FetchInParallelExecution做拓展，继续开发，其他废弃
 * 本项目接口已经全部重构
 
 > 目前技术版本
