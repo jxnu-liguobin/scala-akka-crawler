@@ -69,7 +69,7 @@ class JsoupPageContentVisitor(depth: Int) extends NodeVisitor {
             ele.tagName() match {
                 case CollectTag.Tag_A => {
                     //TODO 会爆内存，需要队列
-                    if (ValidationUrl.vaildUrl(ele.absUrl("href"))) {
+                    if (ValidationUrl.contentUrl(ele.absUrl("href"))) {
                         logger.info("Using link pointing to {}", ele.absUrl("href"))
                         linksToVisit.add(ele.absUrl("href"))
                     } else {
@@ -84,7 +84,11 @@ class JsoupPageContentVisitor(depth: Int) extends NodeVisitor {
                 }
                 case CollectTag.Tag_Img => {
                     val image = ele.attr("src")
-                    imagePaths.add(image)
+
+                    if (ValidationUrl.imgUrl(image)) {
+                        imagePaths.add(image)
+                    }
+
                 }
                 case CollectTag.Tag_Pre => {
                     preContent = ele.text()

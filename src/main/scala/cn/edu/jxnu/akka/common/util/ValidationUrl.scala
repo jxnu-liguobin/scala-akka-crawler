@@ -1,5 +1,7 @@
 package cn.edu.jxnu.akka.common.util
 
+import java.util.regex.Pattern
+
 /**
  * @author 梦境迷离
  * @time 2019-02-27
@@ -10,19 +12,25 @@ object ValidationUrl {
     /**
      * 验证是否页面url合法性
      *
-     * @param link
-     * @return
-     */
-    def vaildUrl(link: String): Boolean = {
-        link.startsWith("http://") || link.startsWith("https://") || link.endsWith("/")
-    }
-
-    /**
-     * 验证图片合法
-     *
      * @param url
      * @return
      */
-    def isUrlUnique(url: String): Boolean = true
+    def vaildUrl(url: String, regex: String): Boolean = {
+        val pattern = Pattern.compile(regex)
+        if (pattern.matcher(url).find()) {
+            true
+        } else {
+            false
+        }
+    }
 
+    def imgUrl(url: String): Boolean = {
+        val imgRegex = "(http|https):\\/\\/([\\w.]+\\/?)\\S*"
+        vaildUrl(url, imgRegex)
+    }
+
+    def contentUrl(url: String): Boolean = {
+        val contentRegex = "^(?:https?://)?[\\w]{1,}(?:\\.?[\\w]{1,})+[\\w-_/?&=#%:]*$"
+        vaildUrl(url, contentRegex)
+    }
 }

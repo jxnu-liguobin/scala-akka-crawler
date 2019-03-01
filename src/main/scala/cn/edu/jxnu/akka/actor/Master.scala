@@ -25,13 +25,13 @@ abstract class Master(latch: CountDownLatch) extends UntypedAbstractActor {
         message match {
             //启动
             case start: String => {
-                logger.info("=======================start================")
+                logger.info("Parse start")
                 visitedPageStore.add(start)
                 getParser() ! visitedPageStore.getNext()
             }
             //页面
             case (content: PageContent, _) => {
-                logger.info("========================page===============")
+                logger.info("Find page")
                 getIndexer() ! content
                 //存储待访问页面链接
                 visitedPageStore.addAll(content.getLinksToFollow())
@@ -48,7 +48,7 @@ abstract class Master(latch: CountDownLatch) extends UntypedAbstractActor {
             }
             //索引
             case indexedMessage: IndexedMessage => {
-                logger.info("====================index=================")
+                logger.info("Index finished")
                 visitedPageStore.finished(indexedMessage.getPath)
                 if (visitedPageStore.isFinished())
                     getIndexer() ! CommitMessage(Constant.message_commit)
@@ -56,7 +56,7 @@ abstract class Master(latch: CountDownLatch) extends UntypedAbstractActor {
             }
             //提交
             case _: CommittedMessage => {
-                logger.info("======================end================")
+                logger.info("All parse and index finished")
                 logger.info("Shutting down, finished")
                 getContext().system.terminate()
                 latch.countDown()

@@ -16,6 +16,6 @@ object Constant {
     final val count_latch_size = 10
 
     //TODO 可配置，待改
-    final val index_path = "D:/git_project/akka-crawler-example/index"
+    final val index_path = "D:/git_project/scala-akka-crawler"
 
 }

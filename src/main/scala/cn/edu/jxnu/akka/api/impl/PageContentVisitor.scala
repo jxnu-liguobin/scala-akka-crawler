@@ -29,7 +29,7 @@ class PageContentVisitor(recursive: Boolean) extends NodeVisitor(recursive) with
     private var baseUrl: String = _
     private var currentUrl: String = _
 
-    def this(recursive: Boolean ,baseUrl: String, currentUrl: String) {
+    def this(recursive: Boolean, baseUrl: String, currentUrl: String) {
         this(recursive)
         this.baseUrl = baseUrl
         this.currentUrl = currentUrl
@@ -41,7 +41,7 @@ class PageContentVisitor(recursive: Boolean) extends NodeVisitor(recursive) with
         tag match {
             case linkTag: LinkTag => {
                 //TODO 会爆内存，需要队列
-                if ( isProbablyHtml(linkTag.getLink())) {
+                if (isProbablyHtml(linkTag.getLink())) {
                     logger.info("Using link pointing to {}", linkTag.getLink())
                     linksToVisit.add(linkTag.getLink())
                 } else {
@@ -65,7 +65,7 @@ class PageContentVisitor(recursive: Boolean) extends NodeVisitor(recursive) with
         }
     }
 
-    override def isProbablyHtml(link: String): Boolean = ValidationUrl.vaildUrl(link)
+    override def isProbablyHtml(link: String): Boolean = ValidationUrl.contentUrl(link)
 
     override def getTitle(): String = title
 

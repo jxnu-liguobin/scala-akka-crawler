@@ -24,3 +24,6 @@ libraryDependencies += "com.janeluo" % "ikanalyzer" % "2012_u6"
 
 libraryDependencies += "org.jsoup" % "jsoup" % "1.10.3"
 
+libraryDependencies += "commons-io" % "commons-io" % "2.3"
+
+
