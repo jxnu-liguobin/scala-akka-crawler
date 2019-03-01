@@ -99,11 +99,11 @@ object DownloadUtil {
 
     def verifyGet(imageUrl: String): String = {
         val suffixes = "jpeg|gif|jpg|png|bmp"
-        val pat = Pattern.compile("[\\w]+[\\.](" + suffixes + ")");
+        val pat = Pattern.compile("[\\w]+[\\.](" + suffixes + ")")
         //正则判断
-        val mc = pat.matcher(imageUrl); //条件匹配
+        val mc = pat.matcher(imageUrl) //条件匹配
         while (mc.find()) {
-            val substring = mc.group(); //截取文件名后缀名
+            val substring = mc.group() //截取文件名后缀名
             val fileType = substring.split("\\.")
             if (fileType != null && fileType.size > 1) {
                 return fileType(1)
