@@ -5,9 +5,13 @@ import java.net.{HttpURLConnection, URL}
 import java.util.Date
 import java.util.regex.Pattern
 
-import cn.edu.jxnu.akka.ImageUrlStore
+import cn.edu.jxnu.akka.{DownloadException, ExceptionConstant, ImageUrlStore}
+import org.slf4j.LoggerFactory
 
 import scala.collection.JavaConversions
+//必须要
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 /**
  * 图片批量下载
@@ -15,19 +19,45 @@ import scala.collection.JavaConversions
 object DownloadUtil {
 
     val target = "D:/git_project/scala-akka-crawler/"
+    private val logger = LoggerFactory.getLogger(DownloadUtil.getClass)
 
-    def downloadImageBatch(images: java.util.List[String]): Unit = {
+    def downloadFuture(images: java.util.List[String]): Future[Boolean] = {
 
-        for (img <- JavaConversions.asScalaIterator(images.iterator())) {
+        val downloadImageBatch: Future[Boolean] = {
+            Future {
+                for (img <- JavaConversions.asScalaIterator(images.iterator())) {
 
-            val imgType = verifyGet(img)
-            val times = String.valueOf(System.currentTimeMillis()) + "." + imgType
-            val folder = DateUtil.formatDate(new Date())
-            val fileTargetName = getImgPathName(target, folder, times)
-            downloadFile(img, fileTargetName)
+                    val imgType = verifyGet(img)
+                    val times = String.valueOf(System.currentTimeMillis()) + "." + imgType
+                    val folder = DateUtil.formatDate(new Date())
+                    val fileTargetName = getImgPathName(target, folder, times)
+                    downloadFile(img, fileTargetName)
+                }
+                true
+            }
         }
-    }
 
+        /**
+         * 成功回调
+         */
+        downloadImageBatch onSuccess {
+            case true => {
+                logger.info("Download Success ")
+            }
+        }
+
+        /**
+         * 失败回调
+         */
+        downloadImageBatch onFailure {
+            case ex: Exception => {
+                logger.error("An error has occured and message is {}", ex.getMessage)
+                //继续跑抛出
+                throw new DownloadException(ExceptionConstant.DOWNLOAD_CODE_IMAGE, ExceptionConstant.DOWNLOAD_MESSAGE_IMAGE)
+            }
+        }
+        try downloadImageBatch
+    }
 
     /**
      *
@@ -84,7 +114,7 @@ object DownloadUtil {
         } catch {
             case ex: Exception => {
                 ImageUrlStore.getImageInvalidList().add(fileUrl)
-                println(ex.getMessage)
+                throw new DownloadException(ExceptionConstant.DOWNLOAD_CODE_IMAGE, ExceptionConstant.DOWNLOAD_MESSAGE_IMAGE)
             }
         }
         finally {

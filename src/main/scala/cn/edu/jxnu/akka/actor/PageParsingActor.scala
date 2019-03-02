@@ -3,6 +3,7 @@ package cn.edu.jxnu.akka.actor
 import java.util.Optional
 
 import akka.actor.{ActorRef, Props, UntypedAbstractActor, actorRef2Scala}
+import cn.edu.jxnu.akka.ExceptionConstant
 import cn.edu.jxnu.akka.actor.message.{ImageDownloadMessage, ImageDownloadedMessage}
 import cn.edu.jxnu.akka.api.PageRetriever
 import cn.edu.jxnu.akka.entity.PageContent
@@ -29,6 +30,10 @@ class PageParsingActor(pageRetriever: PageRetriever) extends UntypedAbstractActo
 
             }
             case imageMessaged: ImageDownloadedMessage => {
+
+                if (imageMessaged.getMessage().equals(ExceptionConstant.DOWNLOAD_MESSAGE_IMAGE)) {
+                    logger.error("Download fail")
+                }
                 logger.info("Download images finished")
                 logger.info("Result message is " + imageMessaged.getMessage)
                 logger.info("There are {} duplicate links", imageMessaged.getDuplicateUrl().size())

@@ -27,6 +27,24 @@
 
 FetchInParallelExecution中main方法即可
 
+> 目前的核心接口与核心Actor
+
+- 接口
+
+* Execution 执行器
+* Indexer 索引器
+* PageRetriever 爬页器
+* PageVisitor 页面解析访问器
+
+- 核心Actor
+
+* ImageDownloadActor 图片下载Actor
+* IndexingActor 信息索引Actor
+* PageParsingActor 页面解析Actor
+* SearchActor 信息查询Actor
+* ParallelActorMaster 主Actor
+
+
 
 
 

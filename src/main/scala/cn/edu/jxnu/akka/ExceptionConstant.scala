@@ -21,8 +21,11 @@ object ExceptionConstant {
     final val ETRIEVAL_MESSAGE = "爬页面错误"
     final val ETRIEVAL_MESSAGE_JSOUP = "Jsoup爬页面错误"
 
-
     final val ETRIEVAL_CODE_MONKEY: Int = 2001
     final val ETRIEVAL_MESSAGE_MONKEY = "Something went horribly wrong when fetching the page."
+
+
+    final val DOWNLOAD_CODE_IMAGE: Int = 3000
+    final val DOWNLOAD_MESSAGE_IMAGE = "下载图片时出错"
 
 }
