@@ -52,7 +52,7 @@ object DownloadUtil {
         downloadImageBatch onFailure {
             case ex: Exception => {
                 logger.error("An error has occured and message is {}", ex.getMessage)
-                //继续跑抛出
+                //继续抛出
                 throw new DownloadException(ExceptionConstant.DOWNLOAD_CODE_IMAGE, ExceptionConstant.DOWNLOAD_MESSAGE_IMAGE)
             }
         }

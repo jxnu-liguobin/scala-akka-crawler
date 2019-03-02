@@ -19,9 +19,9 @@
 * scala:2.11.8
 * lucene:4.7.2
 * akka-actor:2.5.5
-* htmlparser:2.1 准备废弃
+* htmlparser:2.1 废弃
 * ikanalyzer:2012_u6 可选
-* jsoup:1.10.3 定义新的接口
+* jsoup:1.10.3 新接口使用Jsoup解析DOM
 
 > 运行
 
