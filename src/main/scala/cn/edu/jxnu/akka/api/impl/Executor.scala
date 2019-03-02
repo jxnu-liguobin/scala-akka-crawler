@@ -1,9 +1,11 @@
 package cn.edu.jxnu.akka.api.impl
 
 import java.io.{File, IOException}
+import java.util.Date
 
 import cn.edu.jxnu.akka.api.Execution
 import cn.edu.jxnu.akka.common.Constant
+import cn.edu.jxnu.akka.common.util.DateUtil
 import cn.edu.jxnu.akka.{IndexingException, RetrievalException}
 import org.apache.lucene.index._
 import org.apache.lucene.search.IndexSearcher
@@ -32,7 +34,9 @@ class Executor(execution: Execution) {
 
         //Lucene索引
         try {
-            Executor.indexDir = new File(Constant.index_path, "index-" + System.currentTimeMillis())
+            val folder = DateUtil.formatDate(new Date())
+            Constant.index_path + folder
+            Executor.indexDir = new File(Constant.index_path + folder, "index-" + System.currentTimeMillis())
             writer = IndexerImpl.openWriter(Executor.indexDir)
 
             /**

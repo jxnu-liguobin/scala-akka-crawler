@@ -20,8 +20,8 @@ abstract class Master(latch: CountDownLatch) extends UntypedAbstractActor {
 
     override def onReceive(message: Any) = {
 
-        logger.info("Master actor is:" + self)
-        logger.info("Master type is:" + message.getClass.getSimpleName)
+        logger.info("Master actor is " + self)
+        logger.info("Master type is " + message.getClass.getSimpleName)
         message match {
             //启动
             case start: String => {
@@ -50,8 +50,9 @@ abstract class Master(latch: CountDownLatch) extends UntypedAbstractActor {
             case indexedMessage: IndexedMessage => {
                 logger.info("Index finished")
                 visitedPageStore.finished(indexedMessage.getPath)
-                if (visitedPageStore.isFinished())
+                if (visitedPageStore.isFinished()) {
                     getIndexer() ! CommitMessage(Constant.message_commit)
+                }
 
             }
             //提交

@@ -74,7 +74,7 @@ class IndexerImpl(indexWriter: IndexWriter) extends Indexer {
     override def searchAll(indexDir: File): Unit = {
         try {
 
-            logger.info("Search class is :" + this.getClass().getSimpleName())
+            logger.info("Search class is " + this.getClass().getSimpleName())
             //获取搜索器
             val searcher = IndexerImpl.openSearcher(indexDir)
             //匹配所有文档的查询。前100条数据

@@ -1,22 +1,21 @@
 package cn.edu.jxnu.akka.actor
 
-import akka.actor.{Props, UntypedAbstractActor}
-import cn.edu.jxnu.akka.actor.message.{CommitMessage, CommittedMessage, IndexedMessage, SearchMessage}
+import akka.actor.{ActorRef, Props, UntypedAbstractActor}
+import cn.edu.jxnu.akka.actor.message._
 import cn.edu.jxnu.akka.api.Indexer
 import cn.edu.jxnu.akka.common.Constant
-import cn.edu.jxnu.akka.common.util.DownloadUtil
 import cn.edu.jxnu.akka.entity.PageContent
 import org.slf4j.LoggerFactory
 
 /**
  * 执行索引的actor
- *
+ * 单线程IO
  */
 class IndexingActor(indexer: Indexer) extends UntypedAbstractActor {
 
-    private val search = getContext().actorOf(Props.create(classOf[SearchActor]))
-
     private val logger = LoggerFactory.getLogger(classOf[IndexingActor])
+
+    private val search = getContext().actorOf(Props.create(classOf[SearchActor]))
 
     //无类型化actor，与之相对的TypedActor
     /**
@@ -28,16 +27,16 @@ class IndexingActor(indexer: Indexer) extends UntypedAbstractActor {
      */
     override def onReceive(message: Any) = {
 
-        logger.info("Indexing actor is:" + self)
-        logger.info("IndexingActor type is：" + message.getClass.getSimpleName)
+        logger.info("Indexing actor is " + self)
+        logger.info("IndexingActor type is " + message.getClass.getSimpleName)
         message match {
             //页面消息
             case content: PageContent => {
                 indexer.index(content)
                 //查出来
                 this.search ! SearchMessage(Constant.message_search_all)
-                //下载图片
-                DownloadUtil.downloadBatch(content.getImagePaths())
+                //                val imgs = JavaConversions.asScalaBuffer(content.getImagePaths())
+                //                ImageUrlStore.rightPushs(imgs: _*)
                 //报告给主线程
                 this.getSender() ! IndexedMessage(content.getPath())
             }
@@ -54,4 +53,7 @@ class IndexingActor(indexer: Indexer) extends UntypedAbstractActor {
             }
         }
     }
+
+    protected def getSearch(): ActorRef = search
+
 }

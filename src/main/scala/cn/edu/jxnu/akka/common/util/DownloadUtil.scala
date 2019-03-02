@@ -5,6 +5,8 @@ import java.net.{HttpURLConnection, URL}
 import java.util.Date
 import java.util.regex.Pattern
 
+import cn.edu.jxnu.akka.ImageUrlStore
+
 import scala.collection.JavaConversions
 
 /**
@@ -14,10 +16,9 @@ object DownloadUtil {
 
     val target = "D:/git_project/scala-akka-crawler/"
 
-    def downloadBatch(images: java.util.List[String]): Unit = {
+    def downloadImageBatch(images: java.util.List[String]): Unit = {
 
         for (img <- JavaConversions.asScalaIterator(images.iterator())) {
-
 
             val imgType = verifyGet(img)
             val times = String.valueOf(System.currentTimeMillis()) + "." + imgType
@@ -82,6 +83,7 @@ object DownloadUtil {
             out.write(byteArray)
         } catch {
             case ex: Exception => {
+                ImageUrlStore.getImageInvalidList().add(fileUrl)
                 println(ex.getMessage)
             }
         }

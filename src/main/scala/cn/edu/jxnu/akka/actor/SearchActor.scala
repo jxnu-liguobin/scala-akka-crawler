@@ -14,8 +14,8 @@ class SearchActor extends UntypedAbstractActor {
 
     override def onReceive(message: Any) = {
 
-        logger.info("Indexing search actor is:" + self)
-        logger.info("SearchActor type is：" + message.getClass.getSimpleName)
+        logger.info("Indexing search actor is " + self)
+        logger.info("SearchActor type is " + message.getClass.getSimpleName)
         message match {
             //收到索引提交消息就查询出数据
             case _: SearchMessage => {

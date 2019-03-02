@@ -3,8 +3,7 @@ package cn.edu.jxnu.akka.common.util
 import java.util.regex.Pattern
 
 /**
- * @author 梦境迷离
- * @time 2019-02-27
+ * 验证URL链接
  */
 object ValidationUrl {
 

@@ -9,6 +9,9 @@ object Constant {
     final val message_committed = "完成提交"
     final val message_search_all = "查询所有"
 
+    final val message_download_image = "图片下载"
+    final val message_downloaded_image = "确认图片下载"
+
     //actor池大小
     final val round_robin_pool_size = 100
 
@@ -16,6 +19,6 @@ object Constant {
     final val count_latch_size = 50
 
     //TODO 可配置，待改
-    final val index_path = "D:/git_project/scala-akka-crawler"
+    final val index_path = "D:/git_project/scala-akka-crawler/"
 
 }
