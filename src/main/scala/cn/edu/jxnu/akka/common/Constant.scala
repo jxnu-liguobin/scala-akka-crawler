@@ -18,6 +18,8 @@ object Constant {
     //最大并发
     final val count_latch_size = 50
 
+    final val depth_dom = 150
+
     //TODO 可配置，待改
     final val index_path = "D:/git_project/scala-akka-crawler/"
 

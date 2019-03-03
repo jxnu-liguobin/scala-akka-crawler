@@ -32,6 +32,7 @@ class FetchInParallelExecution extends Execution {
 
 object FetchInParallelExecution extends App {
 
+    //测试时不要用页面太多的网站，或者需要登录。目前没有考虑内存qaq
     override def main(args: Array[String]) {
         val execution = new FetchInParallelExecution()
         val exec = new Executor(execution)

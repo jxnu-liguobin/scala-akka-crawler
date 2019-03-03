@@ -1,6 +1,7 @@
 package cn.edu.jxnu.akka.api.impl
 
 import cn.edu.jxnu.akka.api.PageRetriever
+import cn.edu.jxnu.akka.common.Constant
 import cn.edu.jxnu.akka.entity.PageContent
 import cn.edu.jxnu.akka.{ExceptionConstant, RetrievalException}
 import org.htmlparser.Parser
@@ -40,7 +41,7 @@ class HtmlParserPageRetriever(baseUrl: String) extends PageRetriever {
         logger.info("Use jsoup Fetching {}", url)
         try {
 
-            val jsoupPageContentVisitor = new JsoupPageContentVisitor(100, baseUrl, url)
+            val jsoupPageContentVisitor = new JsoupPageContentVisitor(Constant.depth_dom, baseUrl, url)
             val traversor = new NodeTraversor(jsoupPageContentVisitor)
             traversor.traverse(jsoupPageContentVisitor.getRoot())
             jsoupPageContentVisitor.getPageContentWithImages()
