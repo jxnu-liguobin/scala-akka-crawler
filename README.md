@@ -44,6 +44,12 @@ FetchInParallelExecution中main方法即可
 * SearchActor 信息查询Actor
 * ParallelActorMaster 主Actor
 
+- 示意图
+
+随便画的，能看懂就行
+
+![]()
+
 
 
 
