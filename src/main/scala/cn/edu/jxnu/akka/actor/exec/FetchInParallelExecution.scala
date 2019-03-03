@@ -35,6 +35,6 @@ object FetchInParallelExecution extends App {
     override def main(args: Array[String]) {
         val execution = new FetchInParallelExecution()
         val exec = new Executor(execution)
-        exec.execute("https://blog.csdn.net/qq_34446485")
+        exec.execute("https://www.baidu.com/s?wd=%E6%B5%8B%E8%AF%95&rsv_spt=1&rsv_iqid=0xaa8f265a0002da5a&issp=1&f=8&rsv_bp=0&rsv_idx=2&ie=utf-8&tn=baiduhome_pg&rsv_enter=0&rsv_sug3=2&rsv_sug1=1&rsv_sug7=100&inputT=2178&rsv_sug4=3864")
     }
 }

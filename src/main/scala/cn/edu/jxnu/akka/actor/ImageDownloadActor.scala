@@ -27,8 +27,8 @@ class ImageDownloadActor extends Actor {
                 logger.info("Pictures that do not need to be downloaded")
             } else {
                 val imgs = JavaConversions.asScalaBuffer(imageMessage.getUrls())
-                //临时保存
-                ImageUrlStore.rightPushs(imgs: _*)
+                //临时保存全局链接，这里并不判断或记录图片是否完成，只判断了下载是否正常
+                ImageUrlStore.rightPushAll(imgs: _*)
                 //可能阻塞，future 与 async
                 try {
                     var message = ""

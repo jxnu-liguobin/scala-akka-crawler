@@ -84,7 +84,7 @@ class IndexerImpl(indexWriter: IndexWriter) extends Indexer {
             //遍历命中文件的编号，通过搜索器查询到原文档，并输出id
             for (scoreDoc <- result.scoreDocs) {
                 val doc: Document = searcher.doc(scoreDoc.doc)
-                logger.info("path=>"+doc.get("id"))
+                logger.info("path=>" + doc.get("id"))
             }
             close()
         } catch {

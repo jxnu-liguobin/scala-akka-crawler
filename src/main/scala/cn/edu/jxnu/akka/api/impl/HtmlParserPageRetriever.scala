@@ -5,6 +5,7 @@ import cn.edu.jxnu.akka.entity.PageContent
 import cn.edu.jxnu.akka.{ExceptionConstant, RetrievalException}
 import org.htmlparser.Parser
 import org.htmlparser.util.ParserException
+import org.jsoup.select.NodeTraversor
 import org.slf4j.LoggerFactory
 
 /**
@@ -15,12 +16,6 @@ class HtmlParserPageRetriever(baseUrl: String) extends PageRetriever {
 
     private val logger = LoggerFactory.getLogger(classOf[HtmlParserPageRetriever])
 
-    /**
-     * 获取html页content内容
-     *
-     * @param url
-     * @return
-     */
     override def fetchPageContent(url: String): PageContent = {
 
         logger.info("Use htmlparser Fetching {}", url)
@@ -45,8 +40,11 @@ class HtmlParserPageRetriever(baseUrl: String) extends PageRetriever {
         logger.info("Use jsoup Fetching {}", url)
         try {
 
-            val jsoupPageContentVisitor = new JsoupPageContentVisitor(1, baseUrl, url)
-            jsoupPageContentVisitor.parse()
+            val jsoupPageContentVisitor = new JsoupPageContentVisitor(100, baseUrl, url)
+            val traversor = new NodeTraversor(jsoupPageContentVisitor)
+            traversor.traverse(jsoupPageContentVisitor.getRoot())
+            jsoupPageContentVisitor.getPageContentWithImages()
+
         } catch {
             case ex: ParserException => {
                 logger.error(ex.getMessage)

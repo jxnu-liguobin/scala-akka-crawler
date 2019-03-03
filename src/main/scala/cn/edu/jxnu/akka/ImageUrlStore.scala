@@ -9,8 +9,11 @@ import java.util.concurrent.LinkedBlockingDeque
  */
 object ImageUrlStore {
 
-    //准备下载的图片链接
+    //全部链接
     private val imagesUrlQueue = new LinkedBlockingDeque[String](128)
+
+    //准备下载的链接
+    private val imagesUrlToDownloadQueue = new LinkedBlockingDeque[String](128)
 
     //无效的图片链接，包括下载失败
     private val imageInvalidList: util.List[String] = new util.ArrayList[String]()
@@ -20,6 +23,8 @@ object ImageUrlStore {
 
 
     def getImageQueue() = imagesUrlQueue
+
+    def getImagesUrlToDownloadQueue() = imagesUrlToDownloadQueue
 
     def getImageInvalidList() = imageInvalidList
 
@@ -39,29 +44,24 @@ object ImageUrlStore {
     }
 
     /**
-     * 待下载图片从右进队
+     * 从右进队
      *
      * @param url
      */
-    def rightPush(url: String): Boolean = {
+    def rightPush(url: String) = {
 
         if (getImageQueue.contains(url)) {
             addDuplicateImage(url)
-            return false
+        } else {
+            getImagesUrlToDownloadQueue().offerLast(url)
+            getImageQueue().offerLast(url)
         }
-        getImageQueue.offerLast(url)
     }
 
-    def rightPushs(urls: String*): Boolean = {
-
+    def rightPushAll(urls: String*) = {
         for (url <- urls) {
-            if (!getImageQueue.contains(url)) {
-                getImageQueue.offerLast(url)
-            } else {
-                addDuplicateImage(url)
-            }
+            rightPush(url)
         }
-        true
     }
 
 
@@ -71,11 +71,11 @@ object ImageUrlStore {
      * @return
      */
     def leftPoll(): String = {
-        if (getImageQueue().isEmpty) {
+        if (getImagesUrlToDownloadQueue().isEmpty) {
             null
         }
         else {
-            getImageQueue.pollFirst()
+            getImagesUrlToDownloadQueue.pollFirst()
         }
     }
 
@@ -89,18 +89,15 @@ object ImageUrlStore {
         import scala.util.control.Breaks._
 
         val imgs = new util.ArrayList[String]()
-        if (getImageQueue().isEmpty) {
+        if (getImagesUrlToDownloadQueue().isEmpty) {
             return null
         }
         breakable {
-
             for (i <- 1 to n) {
-
-                if (getImageQueue.isEmpty) {
+                if (getImagesUrlToDownloadQueue.isEmpty) {
                     break()
                 }
-
-                imgs.add(getImageQueue.pollFirst())
+                imgs.add(getImagesUrlToDownloadQueue.pollFirst())
             }
         }
         imgs
@@ -113,10 +110,9 @@ object ImageUrlStore {
      */
     def leftPollAll(): util.List[String] = {
         val list = new util.ArrayList[String]()
-        while (!getImageQueue.isEmpty) {
-            list.add(getImageQueue.pollFirst())
+        while (!getImagesUrlToDownloadQueue.isEmpty) {
+            list.add(getImagesUrlToDownloadQueue.pollFirst())
         }
-
         list
     }
 

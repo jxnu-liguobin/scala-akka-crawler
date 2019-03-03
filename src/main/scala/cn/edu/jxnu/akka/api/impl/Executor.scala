@@ -25,11 +25,6 @@ class Executor(execution: Execution) {
     var writer: IndexWriter = _
     var searcher: IndexSearcher = _
 
-    /**
-     * 执行调用
-     *
-     * @param path
-     */
     def execute(path: String) = {
 
         //Lucene索引

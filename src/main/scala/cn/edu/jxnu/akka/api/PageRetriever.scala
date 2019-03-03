@@ -8,11 +8,12 @@ import cn.edu.jxnu.akka.entity.PageContent
 abstract class PageRetriever {
 
     /**
-     * 获取content内容
+     * 使用htmlparser
      *
      * @param url
      * @return
      */
+    @deprecated
     def fetchPageContent(url: String): PageContent
 
     /**
