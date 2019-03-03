@@ -5,8 +5,8 @@
 
 详细说明：
 
-* http://blog.florian-hopf.de/2012/08/getting-rid-of-synchronized-using-akka.html
-* https://github.com/fhopf/akka-crawler-example
+* ```http://blog.florian-hopf.de/2012/08/getting-rid-of-synchronized-using-akka.html```
+* ```https://github.com/fhopf/akka-crawler-example```
 * 原项目包含4个简单的Web爬虫程序示例，可执行main方法在cn.edu.jxnu.akka.actor.exec中
         
 * 本项目对引用的组件的版本、语法、过期接口进行了优化处理并解决了已知存在的BUG
