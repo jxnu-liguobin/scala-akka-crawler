@@ -1,9 +1,11 @@
 package cn.edu.jxnu.akka.actor
 
 import akka.actor.Actor
+import cn.edu.jxnu.akka.ImageUrlStore
 import cn.edu.jxnu.akka.actor.message.{ImageDownloadMessage, ImageDownloadedMessage}
+import cn.edu.jxnu.akka.common.ExceptionConstant
 import cn.edu.jxnu.akka.common.util.DownloadUtil
-import cn.edu.jxnu.akka.{DownloadException, ExceptionConstant, ImageUrlStore}
+import cn.edu.jxnu.akka.exception.DownloadException
 import org.slf4j.LoggerFactory
 
 import scala.collection.JavaConversions
@@ -33,7 +35,7 @@ class ImageDownloadActor extends Actor {
                 try {
                     var message = ""
                     val downloadRet: Future[Boolean] = DownloadUtil.downloadFuture(ImageUrlStore.leftPollAll())
-                    //无效和下载链接需要等待图片下载完成才能获取，否则可能获取不到最新值
+                    //无效和下载失败的链接需要等待图片下载完成才能获取，否则可能获取不到最新值
                     if (downloadRet.isCompleted && downloadRet.value.get.isSuccess) {
                         if (!ImageUrlStore.getImageInvalidList().isEmpty) {
                             logger.info("Pictures that can not be downloaded")

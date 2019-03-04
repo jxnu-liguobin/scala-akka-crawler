@@ -3,9 +3,9 @@ package cn.edu.jxnu.akka.actor
 import java.util.Optional
 
 import akka.actor.{ActorRef, Props, UntypedAbstractActor, actorRef2Scala}
-import cn.edu.jxnu.akka.ExceptionConstant
 import cn.edu.jxnu.akka.actor.message.{ImageDownloadMessage, ImageDownloadedMessage}
 import cn.edu.jxnu.akka.api.PageRetriever
+import cn.edu.jxnu.akka.common.ExceptionConstant
 import cn.edu.jxnu.akka.entity.PageContent
 import org.slf4j.LoggerFactory
 

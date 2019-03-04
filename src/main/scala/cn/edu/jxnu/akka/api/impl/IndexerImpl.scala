@@ -3,8 +3,9 @@ package cn.edu.jxnu.akka.api.impl
 import java.io.{File, IOException}
 
 import cn.edu.jxnu.akka.api.Indexer
+import cn.edu.jxnu.akka.common.ExceptionConstant
 import cn.edu.jxnu.akka.entity.PageContent
-import cn.edu.jxnu.akka.{ExceptionConstant, IndexingException}
+import cn.edu.jxnu.akka.exception.IndexingException
 import org.apache.lucene.document.{Document, Field}
 import org.apache.lucene.index.{CorruptIndexException, DirectoryReader, IndexWriter, IndexWriterConfig}
 import org.apache.lucene.search.{IndexSearcher, MatchAllDocsQuery, TopDocs}

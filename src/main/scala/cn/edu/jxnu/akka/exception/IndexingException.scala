@@ -1,4 +1,6 @@
-package cn.edu.jxnu.akka
+package cn.edu.jxnu.akka.exception
+
+import cn.edu.jxnu.akka.common.ExceptionConstant
 
 /**
  * 异常

@@ -6,7 +6,7 @@ import java.util.Date
 import cn.edu.jxnu.akka.api.Execution
 import cn.edu.jxnu.akka.common.Constant
 import cn.edu.jxnu.akka.common.util.DateUtil
-import cn.edu.jxnu.akka.{IndexingException, RetrievalException}
+import cn.edu.jxnu.akka.exception.{IndexingException, RetrievalException}
 import org.apache.lucene.index._
 import org.apache.lucene.search.IndexSearcher
 import org.perf4j.{LoggingStopWatch, StopWatch}

@@ -3,11 +3,13 @@ package cn.edu.jxnu.akka.api.impl
 import java.util
 import java.util.List
 
-import cn.edu.jxnu.akka.common.CollectTag
 import cn.edu.jxnu.akka.common.util.ValidationUrl
+import cn.edu.jxnu.akka.common.{CollectTag, ExceptionConstant}
 import cn.edu.jxnu.akka.entity.PageContent
+import cn.edu.jxnu.akka.exception.ConnectionException
+import cn.edu.jxnu.akka.http.{ConnectionExecuter, RequestInfo}
 import org.jsoup.Jsoup
-import org.jsoup.nodes.{Element, Node}
+import org.jsoup.nodes.{Document, Element, Node}
 import org.jsoup.select.{Elements, NodeVisitor}
 import org.slf4j.LoggerFactory
 
@@ -105,10 +107,29 @@ class JsoupPageContentVisitor(depth: Int) extends NodeVisitor {
         }
     }
 
-    def getRoot(): Node = {
+    /**
+     * 调用链接，并得到Document
+     *
+     * 入参先判断正确性
+     *
+     * @return
+     */
+    def startParser(requestInfo: RequestInfo): Document = {
 
-        val document = Jsoup.connect(this.baseUrl).get();
-        document.root()
+        if (requestInfo == null) {
+            throw new ConnectionException(ExceptionConstant.CONNECTION_CODE, ExceptionConstant.CONNECTION_MESSAGE_NNP)
+        }
+
+        if (requestInfo.getConnection == null) {
+            throw new ConnectionException(ExceptionConstant.CONNECTION_CODE, ExceptionConstant.CONNECTION_MESSAGE_NNP)
+        }
+
+        val connection: ConnectionExecuter = new ConnectionExecuter(requestInfo)
+
+        if (connection == null) {
+            throw new ConnectionException(ExceptionConstant.CONNECTION_CODE, ExceptionConstant.CONNECTION_MESSAGE)
+        }
+        connection.connectWithUrl()
     }
 
     @volatile

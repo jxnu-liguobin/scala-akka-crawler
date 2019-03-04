@@ -5,7 +5,9 @@ import java.net.{HttpURLConnection, URL}
 import java.util.Date
 import java.util.regex.Pattern
 
-import cn.edu.jxnu.akka.{DownloadException, ExceptionConstant, ImageUrlStore}
+import cn.edu.jxnu.akka.ImageUrlStore
+import cn.edu.jxnu.akka.common.ExceptionConstant
+import cn.edu.jxnu.akka.exception.DownloadException
 import org.slf4j.LoggerFactory
 
 import scala.collection.JavaConversions

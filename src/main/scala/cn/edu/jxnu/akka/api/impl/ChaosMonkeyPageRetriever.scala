@@ -1,12 +1,13 @@
 package cn.edu.jxnu.akka.api.impl
 
+import cn.edu.jxnu.akka.common.ExceptionConstant
 import cn.edu.jxnu.akka.entity.PageContent
-import cn.edu.jxnu.akka.{ExceptionConstant, RetrievalException}
+import cn.edu.jxnu.akka.exception.RetrievalException
 
 /**
  * 随机
  */
-@Deprecated
+@deprecated
 class ChaosMonkeyPageRetriever(baseUrl: String) extends HtmlParserPageRetriever(baseUrl) {
 
     override def fetchPageContent(url: String): PageContent = {

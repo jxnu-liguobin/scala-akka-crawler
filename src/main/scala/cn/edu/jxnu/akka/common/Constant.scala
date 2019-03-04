@@ -20,6 +20,9 @@ object Constant {
 
     final val depth_dom = 150
 
+    //默认超时，毫秒
+    final val timeout = 100000
+
     //TODO 可配置，待改
     final val index_path = "D:/git_project/scala-akka-crawler/"
 
