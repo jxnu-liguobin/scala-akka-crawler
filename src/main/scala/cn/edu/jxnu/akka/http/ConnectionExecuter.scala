@@ -13,14 +13,14 @@ class ConnectionExecuter(requestInfo: RequestInfo) {
      * 封装了自定义的请求头处理
      */
     //    @throws
-    def connectWithUrl() = {
+    def connect() = {
         setRequestParams().get()
     }
 
     /**
      * 只输入url不能调用本方法
      */
-    def setRequestParams(): Connection = {
+    private def setRequestParams(): Connection = {
 
         val connection = requestInfo.getConnection
 

@@ -129,7 +129,7 @@ class JsoupPageContentVisitor(depth: Int) extends NodeVisitor {
         if (connection == null) {
             throw new ConnectionException(ExceptionConstant.CONNECTION_CODE, ExceptionConstant.CONNECTION_MESSAGE)
         }
-        connection.connectWithUrl()
+        connection.connect()
     }
 
     @volatile
