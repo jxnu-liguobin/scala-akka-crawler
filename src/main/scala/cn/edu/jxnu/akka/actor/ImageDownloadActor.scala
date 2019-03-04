@@ -29,9 +29,9 @@ class ImageDownloadActor extends Actor {
                 logger.info("Pictures that do not need to be downloaded")
             } else {
                 val imgs = JavaConversions.asScalaBuffer(imageMessage.getUrls())
-                //临时保存全局链接，这里并不判断或记录图片是否完成，只判断了下载是否正常
+                //临时保存全局链接，这里并不判断或记录图片是否完成，只判断了下载是否正常，需要换成缓存、队列
                 ImageUrlStore.rightPushAll(imgs: _*)
-                //可能阻塞，future 与 async
+                //可能阻塞，future有回调
                 try {
                     var message = ""
                     val downloadRet: Future[Boolean] = DownloadUtil.downloadFuture(ImageUrlStore.leftPollAll())
