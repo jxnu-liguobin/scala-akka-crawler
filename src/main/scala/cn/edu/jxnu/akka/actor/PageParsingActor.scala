@@ -2,12 +2,16 @@ package cn.edu.jxnu.akka.actor
 
 import java.util.Optional
 
-import akka.actor.{ActorRef, Props, UntypedAbstractActor, actorRef2Scala}
+import akka.actor.SupervisorStrategy.{Escalate, Restart}
+import akka.actor.{ActorRef, OneForOneStrategy, Props, SupervisorStrategy, UntypedAbstractActor, actorRef2Scala}
 import cn.edu.jxnu.akka.actor.message.{ImageDownloadMessage, ImageDownloadedMessage}
 import cn.edu.jxnu.akka.api.PageRetriever
 import cn.edu.jxnu.akka.common.ExceptionConstant
 import cn.edu.jxnu.akka.entity.PageContent
+import cn.edu.jxnu.akka.exception.DownloadException
 import org.slf4j.LoggerFactory
+
+import scala.concurrent.duration.Duration
 
 /**
  * 页面解析actor
@@ -50,5 +54,16 @@ class PageParsingActor(pageRetriever: PageRetriever) extends UntypedAbstractActo
     }
 
     protected def getDownloadImg(): ActorRef = downloadImage
+
+    //一分钟内五次
+    //OneForOneStrategy只会应用于崩溃的actor对象
+    override def supervisorStrategy: SupervisorStrategy = OneForOneStrategy(maxNrOfRetries = 5, Duration.create("1 minute"), true) {
+
+        //图片下载挂了继续干啊，重新下载！
+        case _: DownloadException => Restart
+        //其他异常上抛，不管了
+        case _: Exception => Escalate
+
+    }
 
 }

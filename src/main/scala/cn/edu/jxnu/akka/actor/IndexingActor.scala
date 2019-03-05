@@ -1,11 +1,14 @@
 package cn.edu.jxnu.akka.actor
 
-import akka.actor.{ActorRef, Props, UntypedAbstractActor}
+import akka.actor.SupervisorStrategy.Resume
+import akka.actor.{ActorRef, AllForOneStrategy, Props, SupervisorStrategy, UntypedAbstractActor}
 import cn.edu.jxnu.akka.actor.message._
 import cn.edu.jxnu.akka.api.Indexer
 import cn.edu.jxnu.akka.common.Constant
 import cn.edu.jxnu.akka.entity.PageContent
 import org.slf4j.LoggerFactory
+
+import scala.concurrent.duration.Duration
 
 /**
  * 执行索引的actor
@@ -56,5 +59,13 @@ class IndexingActor(indexer: Indexer) extends UntypedAbstractActor {
     }
 
     protected def getSearch(): ActorRef = search
+
+    //AllForOneStrategy
+    override def supervisorStrategy: SupervisorStrategy = AllForOneStrategy(maxNrOfRetries = 5, Duration.create("1 minute"), true) {
+
+        //查询挂了，保留状态，继续开始
+        //只有父actor能控制失败策略，而不是与它通信的actor
+        case _: Exception => Resume
+    }
 
 }

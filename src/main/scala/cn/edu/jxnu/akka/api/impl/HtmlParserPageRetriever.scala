@@ -51,7 +51,8 @@ class HtmlParserPageRetriever(baseUrl: String) extends PageRetriever {
             //自己传入需要设置的参数，和需要使用的HTTPConnection
             val requestInfo: RequestInfo = new RequestInfo()
             requestInfo.setMethod(Connection.Method.GET)
-            requestInfo.setTimeout(Constant.timeout)
+//            requestInfo.setTimeout(Constant.timeout)
+            requestInfo.setTimeout(10)
             if (!ValidationUrl.contentUrl(url)) {
                 throw new RetrievalException(ExceptionConstant.ETRIEVAL_MESSAGE_URL)
             }
