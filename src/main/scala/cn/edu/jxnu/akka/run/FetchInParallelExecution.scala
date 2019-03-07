@@ -1,4 +1,4 @@
-package cn.edu.jxnu.akka.actor.exec
+package cn.edu.jxnu.akka.run
 
 import java.util.concurrent.CountDownLatch
 

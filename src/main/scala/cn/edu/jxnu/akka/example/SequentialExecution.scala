@@ -1,4 +1,4 @@
-package cn.edu.jxnu.akka.actor.exec
+package cn.edu.jxnu.akka.example
 
 import cn.edu.jxnu.akka.VisitedPageStore
 import cn.edu.jxnu.akka.api.Execution
