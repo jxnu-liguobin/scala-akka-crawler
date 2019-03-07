@@ -8,11 +8,10 @@
 * ```http://blog.florian-hopf.de/2012/08/getting-rid-of-synchronized-using-akka.html```
 * ```https://github.com/fhopf/akka-crawler-example```
 * 原项目包含3个简单的Web爬虫程序示例，可执行main方法在cn.edu.jxnu.akka.example中
-        
+  
 * 本项目对引用的组件的版本、语法、过期接口进行了优化处理并解决了已知存在的BUG
 * 本项目为二次开发，接口已经全部重构，仅actor的功能划分沿用了原项目
 * 本项目使用全新的jsoup替换htmlparser
-* main方法在FetchInParallelExecution中
 
 > 目前技术版本
 
