@@ -3,3 +3,4 @@ target/
 build/
 lib_managed/
 index-*/*
+.idea/
