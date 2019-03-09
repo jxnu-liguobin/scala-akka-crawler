@@ -23,4 +23,14 @@ abstract class PageRetriever {
      * @return
      */
     def fetchPageContentWithJsoup(url: String): PageContent = null
+
+
+    /**
+     * 同上，增加是否支持代理
+     *
+     * @param url
+     * @param useProxy
+     * @return
+     */
+    def fetchPageContent(url: String, useProxy: Boolean): PageContent = null
 }

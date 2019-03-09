@@ -5,7 +5,6 @@ name := "scala-akka-crawler"
 version := "1.0"
 
 scalaVersion := "2.11.8"
-
 retrieveManaged := true
 
 // "org.apache.lucene" % "lucene-core" % "4.7.2"
@@ -32,6 +31,7 @@ retrieveManaged := true
 //
 // "org.scalatest" %% "scalatest" % "3.0.5" % Test
 
+//仓库的配置文件是repositories
 //%% 自动给库包的报名结尾加上Scala的版本号,%只用于分割groupId与artifactId
 libraryDependencies ++= Seq(
 
@@ -46,5 +46,13 @@ libraryDependencies ++= Seq(
     "org.jsoup" % "jsoup" % "1.10.3",
     "commons-io" % "commons-io" % "2.3",
     "com.typesafe.akka" %% "akka-testkit" % "2.5.9" % Test,
-    "org.scalatest" %% "scalatest" % "3.0.5" % Test
+    "org.scalatest" %% "scalatest" % "3.0.5" % Test,
+    "org.apache.httpcomponents" % "httpclient" % "4.5.3",
+    "io.reactivex.rxjava2" % "rxjava" % "2.2.3",
+    "org.springframework.boot" % "spring-boot-autoconfigure" % "1.5.9.RELEASE" exclude("org.springframework.boot", "spring-boot-starter-logging"),
+    "org.springframework.boot" % "spring-boot-starter-web" % "1.5.9.RELEASE" exclude("org.springframework.boot", "spring-boot-starter-logging"),
+    "org.springframework.boot" % "spring-boot-starter-cache" % "1.5.9.RELEASE" exclude("org.springframework.boot", "spring-boot-starter-logging")
+
+
 )
+logLevel := Level.Warn

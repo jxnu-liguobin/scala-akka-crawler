@@ -2,11 +2,11 @@ package cn.edu.jxnu.akka.actor
 
 import java.util.Optional
 
-import akka.actor.SupervisorStrategy.{Escalate, Restart}
+import akka.actor.SupervisorStrategy.{Escalate, Resume}
 import akka.actor.{ActorRef, OneForOneStrategy, Props, SupervisorStrategy, UntypedAbstractActor, actorRef2Scala}
 import cn.edu.jxnu.akka.actor.message.{ImageDownloadMessage, ImageDownloadedMessage}
 import cn.edu.jxnu.akka.api.PageRetriever
-import cn.edu.jxnu.akka.common.ExceptionConstant
+import cn.edu.jxnu.akka.common.{Constant, ExceptionConstant}
 import cn.edu.jxnu.akka.entity.PageContent
 import cn.edu.jxnu.akka.exception.DownloadException
 import org.slf4j.LoggerFactory
@@ -27,7 +27,7 @@ class PageParsingActor(pageRetriever: PageRetriever) extends UntypedAbstractActo
         logger.info("PageParsingActor type is " + message.getClass.getSimpleName)
         message match {
             case msg: String => {
-                val content: PageContent = pageRetriever.fetchPageContentWithJsoup(msg)
+                val content: PageContent = pageRetriever.fetchPageContent(msg,Constant.userProxy)
                 sender ! (content, self)
                 //页面解析完成后就开始下载图片，而不是等到索引完成，因为索引是单线程IO
                 getDownloadImg ! ImageDownloadMessage(content.getImagePaths())
@@ -59,8 +59,8 @@ class PageParsingActor(pageRetriever: PageRetriever) extends UntypedAbstractActo
     //OneForOneStrategy只会应用于崩溃的actor对象
     override def supervisorStrategy: SupervisorStrategy = OneForOneStrategy(maxNrOfRetries = 5, Duration.create("1 minute"), true) {
 
-        //图片下载挂了继续干啊，重新下载！
-        case _: DownloadException => Restart
+        //图片下载挂了继续干啊，忽略，继续下载！
+        case _: DownloadException => Resume
         //其他异常上抛，不管了
         case _: Exception => Escalate
 

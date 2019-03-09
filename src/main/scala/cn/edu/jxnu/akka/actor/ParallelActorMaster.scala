@@ -2,13 +2,13 @@ package cn.edu.jxnu.akka.actor
 
 import java.util.concurrent.CountDownLatch
 
-import akka.actor.SupervisorStrategy.{Restart, Stop}
+import akka.actor.SupervisorStrategy.{Escalate, Restart, Stop}
 import akka.actor.{ActorRef, AllForOneStrategy, Props, SupervisorStrategy}
 import akka.routing.RoundRobinPool
 import cn.edu.jxnu.akka.api.PageRetriever
 import cn.edu.jxnu.akka.api.impl.IndexerImpl
 import cn.edu.jxnu.akka.common.Constant
-import cn.edu.jxnu.akka.exception.{IndexingException, RetrievalException}
+import cn.edu.jxnu.akka.exception.{IndexingException, ProxyException, RetrievalException}
 import org.apache.lucene.index.IndexWriter
 import org.slf4j.LoggerFactory
 
@@ -55,9 +55,11 @@ class ParallelActorMaster(latch: CountDownLatch) extends Master(latch) {
 
         //索引是IO操作，挂了就停止，还跑个毛。
         case _: IndexingException => Stop
-        //重启，不保留状态，重新抓取页面
+        //重启，Restart不保留状态，重新抓取页面
         case _: RetrievalException => Restart
-        //其他异常暂时先终止
+        //代理异常，忽略
+        case _: ProxyException => Escalate
+            //其他异常
         case _: Exception => Stop
     }
 }

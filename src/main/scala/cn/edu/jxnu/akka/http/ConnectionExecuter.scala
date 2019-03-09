@@ -36,8 +36,8 @@ class ConnectionExecuter(requestInfo: RequestInfo) {
         if (requestInfo.getIgnoreHttpErrors != null) {
             connection.ignoreHttpErrors(requestInfo.getIgnoreHttpErrors)
         }
-        if (requestInfo.getProxyIp != null && requestInfo.getProxyPort != null && requestInfo.getProxyPort > 0) {
-            connection.proxy(requestInfo.getProxyIp, requestInfo.getProxyPort)
+        if (requestInfo.getProxy != null) {
+            connection.proxy(requestInfo.getProxy)
         }
         if (requestInfo.getTimeout != null && requestInfo.getTimeout > 0) {
             connection.timeout(requestInfo.getTimeout)

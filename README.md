@@ -13,7 +13,7 @@
 * 本项目为二次开发，接口已经全部重构，仅actor的功能划分沿用了原项目
 * 本项目使用全新的jsoup替换htmlparser
 
-> 目前技术版本
+> 目前主要组件的版本
 
 * sbt:1.2.8
 * scala:2.11.8
@@ -22,33 +22,42 @@
 * htmlparser:2.1
 * ikanalyzer:2012_u6
 * jsoup:1.10.3
+* httpclient:4.3.5
+* SpringBoot:1.5.9
+* rxjava2:2.2.3
 
 > 运行
 
-cn.edu.jxnu.akka.run.FetchInParallelExecution中main方法即可
+1. 简单执行：cn.edu.jxnu.akka.run.FetchInParallelExecution中main方法
+2. 使用SpringBoot执行：cn.edu.jxnu.akka.StartApp中springboot的启动方法
 
-> 目前的核心接口与核心Actor
+- 注意
 
-- 接口
+1. 默认不使用代理，在cn.edu.jxnu.akka.common.Constant可修改
+2. springboot相关配置在application.properties可修改
 
-* Execution 执行器
-* Indexer 索引器
-* PageRetriever 爬页器
-* PageVisitor 页面解析访问器
+> 修改sbt镜像
 
-- 核心Actor
+1. 找到sbt安装目录下的conf文件夹
+2. 在conf下创建repositories文件
+3. repositories中加入以下内容
 
-* ImageDownloadActor 图片下载Actor
-* IndexingActor 信息索引Actor
-* PageParsingActor 页面解析Actor
-* SearchActor 信息查询Actor
-* ParallelActorMaster 主Actor
+```
+[repositories]
+local
+osc: http://maven.oschina.net/content/groups/public/
+typesafe: http://repo.typesafe.com/typesafe/ivy-releases/, [organization]/[module]/(scala_[scalaVersion]/)(sbt_[sbtVersion]/)[revision]/[type]s/[artifact](-[classifier]).[ext], bootOnly
+sonatype-oss-releases
+maven-centra
+```
 
 - 示意图
 
 随便画的，能看懂就行
 
 ![](https://github.com/jxnu-liguobin/scala-akka-crawler/blob/master/src/main/resources/actor_img_1.png)
+
+
 
 
 

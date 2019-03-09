@@ -27,4 +27,20 @@ object Constant {
     //TODO 可配置，待改
     final val index_path = "D:/git_project/scala-akka-crawler/"
 
+    /**
+     * 单个ip请求间隔，单位ms
+     */
+    final val time_interval: Long = 1000
+
+    /**
+     * 代理socket验证超时
+     */
+    final val proxy_timeout: Int = 3000
+
+    final val userProxy=false
+
+    final val charset = "UTF-8"
+
+    final val url_test = "https://www.baidu.com/s?wd=%E6%B5%8B%E8%AF%95&rsv_spt=1&rsv_iqid=0xaa8f265a0002da5a&issp=1&f=8&rsv_bp=0&rsv_idx=2&ie=utf-8&tn=baiduhome_pg&rsv_enter=0&rsv_sug3=2&rsv_sug1=1&rsv_sug7=100&inputT=2178&rsv_sug4=3864"
+
 }

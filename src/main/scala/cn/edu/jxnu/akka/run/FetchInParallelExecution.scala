@@ -30,6 +30,9 @@ class FetchInParallelExecution extends Execution {
 
 }
 
+/**
+ * 使用爬虫，爬虫通过定时器获取，无法再使用第二个main
+ */
 object FetchInParallelExecution extends App {
 
     //测试时不要用页面太多的网站，或者需要登录。目前没有考虑内存qaq

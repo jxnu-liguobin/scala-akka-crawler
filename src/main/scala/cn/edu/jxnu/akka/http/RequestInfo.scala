@@ -5,16 +5,14 @@ import org.jsoup.Connection
 import scala.beans.BeanProperty
 
 /**
- * 请求携带的实体
+ * 爬虫连接请求携带的请求体
  */
 class RequestInfo {
 
 
     //    @BeanProperty var url: String = _
 
-    @BeanProperty var proxyIp: String = _
-
-    @BeanProperty var proxyPort: Int = _
+    @BeanProperty var proxy: java.net.Proxy = _
 
     @BeanProperty var userAgent: String = _
 
@@ -32,5 +30,5 @@ class RequestInfo {
     @BeanProperty var connection: Connection = _
 
 
-    override def toString = s"RequestInfo($proxyIp, $proxyPort, $userAgent, $timeout, $method, $ignoreHttpErrors, $headers, $cookies, $connection)"
+    override def toString = s"RequestInfo($proxy, $userAgent, $timeout, $method, $ignoreHttpErrors, $headers, $cookies, $connection)"
 }
