@@ -12,6 +12,11 @@
 * 本项目对引用的组件的版本、语法、过期接口进行了优化处理并解决了已知存在的BUG
 * 本项目为二次开发，接口已经全部重构，仅actor的功能划分沿用了原项目
 * 本项目使用全新的jsoup替换htmlparser
+* 本项目是sbt+springboot项目
+
+> 本项目代理池参考了fengzhizi715的ProxyPool项目
+
+* ```https://github.com/fengzhizi715/ProxyPool```
 
 > 目前主要组件的版本
 
