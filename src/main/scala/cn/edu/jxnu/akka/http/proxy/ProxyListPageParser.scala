@@ -1,5 +1,7 @@
 package cn.edu.jxnu.akka.http.proxy
 
+import cn.edu.jxnu.akka.entity.Proxy
+
 /**
  * 代理获取接口
  *

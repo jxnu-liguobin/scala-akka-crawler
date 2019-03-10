@@ -1,5 +1,6 @@
 package cn.edu.jxnu.akka.http.proxy;
 
+import cn.edu.jxnu.akka.entity.Proxy;
 import cn.edu.jxnu.akka.http.HttpManager;
 import io.reactivex.Flowable;
 import io.reactivex.functions.Function;
@@ -46,7 +47,7 @@ public class ProxyManager {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    return new ArrayList<Proxy>();
+                    return new ArrayList<cn.edu.jxnu.akka.entity.Proxy>();
                 })
                 .flatMap((Function<List<Proxy>, Publisher<Proxy>>) proxies -> {
                     if (proxies != null) {

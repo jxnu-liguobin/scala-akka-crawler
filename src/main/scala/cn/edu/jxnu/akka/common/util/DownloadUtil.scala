@@ -5,9 +5,9 @@ import java.net.{HttpURLConnection, URL}
 import java.util.Date
 import java.util.regex.Pattern
 
-import cn.edu.jxnu.akka.ImageUrlStore
-import cn.edu.jxnu.akka.common.ExceptionConstant
+import cn.edu.jxnu.akka.common.{Constant, ExceptionConstant}
 import cn.edu.jxnu.akka.exception.DownloadException
+import cn.edu.jxnu.akka.store.ImageUrlStore
 import org.slf4j.LoggerFactory
 
 import scala.collection.JavaConversions
@@ -84,7 +84,6 @@ object DownloadUtil {
             testFile.mkdir()
         }
         //先写死
-
         if (realPath.endsWith("/")) {
 
             realPath + fileName
@@ -115,6 +114,7 @@ object DownloadUtil {
             out.write(byteArray)
         } catch {
             case ex: Exception => {
+                logger.info(ex.getMessage)
                 ImageUrlStore.getImageInvalidList().add(fileUrl)
                 throw new DownloadException(ExceptionConstant.DOWNLOAD_CODE_IMAGE, ExceptionConstant.DOWNLOAD_MESSAGE_IMAGE)
             }
@@ -132,7 +132,7 @@ object DownloadUtil {
     }
 
     def verifyGet(imageUrl: String): String = {
-        val suffixes = "jpeg|gif|jpg|png|bmp"
+        val suffixes = Constant.suffixes
         val pat = Pattern.compile("[\\w]+[\\.](" + suffixes + ")")
         //正则判断
         val mc = pat.matcher(imageUrl) //条件匹配

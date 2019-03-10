@@ -5,6 +5,7 @@ import java.util
 import java.util.List
 import java.util.concurrent.Callable
 
+import cn.edu.jxnu.akka.entity.Proxy
 import cn.edu.jxnu.akka.http.{HttpManager, ResponseInfo}
 import org.slf4j.LoggerFactory
 
@@ -13,7 +14,7 @@ import scala.collection.JavaConversions
 /**
  * 代理获取回调
  */
-class ProxyPageCallable extends Callable[List[cn.edu.jxnu.akka.http.proxy.Proxy]] {
+class ProxyPageCallable extends Callable[List[Proxy]] {
 
     private val log = LoggerFactory.getLogger(classOf[ProxyPageCallable])
 

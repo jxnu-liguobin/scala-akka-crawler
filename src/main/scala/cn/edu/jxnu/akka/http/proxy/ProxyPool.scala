@@ -3,6 +3,7 @@ package cn.edu.jxnu.akka.http.proxy
 import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.atomic.AtomicInteger
 
+import cn.edu.jxnu.akka.entity.Proxy
 import org.slf4j.LoggerFactory
 import org.springframework.cache.annotation.{CacheEvict, Cacheable}
 

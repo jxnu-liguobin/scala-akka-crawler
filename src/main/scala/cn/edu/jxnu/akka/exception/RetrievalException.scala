@@ -3,7 +3,7 @@ package cn.edu.jxnu.akka.exception
 import cn.edu.jxnu.akka.common.ExceptionConstant
 
 /**
- * 异常
+ * 爬取异常
  */
 class RetrievalException(val message: String) extends RuntimeException(message) {
 

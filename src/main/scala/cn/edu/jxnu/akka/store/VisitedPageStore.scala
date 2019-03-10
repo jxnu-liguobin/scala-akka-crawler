@@ -1,4 +1,4 @@
-package cn.edu.jxnu.akka
+package cn.edu.jxnu.akka.store
 
 import java.util.List
 

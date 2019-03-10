@@ -1,4 +1,4 @@
-package cn.edu.jxnu.akka.http.proxy
+package cn.edu.jxnu.akka.entity
 
 import java.net.InetSocketAddress
 import java.util.concurrent.{Delayed, TimeUnit}

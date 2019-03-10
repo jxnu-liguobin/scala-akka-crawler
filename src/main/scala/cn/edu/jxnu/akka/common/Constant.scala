@@ -15,10 +15,14 @@ object Constant {
     //actor池大小
     final val round_robin_pool_size = 100
 
-    //最大并发
+    //main方法等待的最大actor
     final val count_latch_size = 50
 
+    //DOM深度遍历的最大深度
     final val depth_dom = 150
+
+    //下载支持的图片后缀格式
+    final val suffixes = "jpeg|gif|jpg|png|bmp"
 
     //默认超时，毫秒
     //测试需要频繁修改这个参数，可能有缓存导致改了没生效，强制刷新内存
@@ -37,7 +41,7 @@ object Constant {
      */
     final val proxy_timeout: Int = 3000
 
-    final val userProxy=false
+    final val userProxy = false
 
     final val charset = "UTF-8"
 

@@ -1,11 +1,11 @@
 package cn.edu.jxnu.akka.actor
 
 import akka.actor.Actor
-import cn.edu.jxnu.akka.ImageUrlStore
 import cn.edu.jxnu.akka.actor.message.{ImageDownloadMessage, ImageDownloadedMessage}
 import cn.edu.jxnu.akka.common.ExceptionConstant
 import cn.edu.jxnu.akka.common.util.DownloadUtil
 import cn.edu.jxnu.akka.exception.DownloadException
+import cn.edu.jxnu.akka.store.ImageUrlStore
 import org.slf4j.LoggerFactory
 
 import scala.collection.JavaConversions

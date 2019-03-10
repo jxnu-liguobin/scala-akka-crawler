@@ -5,7 +5,7 @@ import java.net.SocketTimeoutException
 import cn.edu.jxnu.akka.api.PageRetriever
 import cn.edu.jxnu.akka.common.util.ValidationUrl
 import cn.edu.jxnu.akka.common.{Constant, ExceptionConstant}
-import cn.edu.jxnu.akka.entity.PageContent
+import cn.edu.jxnu.akka.entity.{PageContent, Proxy}
 import cn.edu.jxnu.akka.exception.{ProxyException, RetrievalException}
 import cn.edu.jxnu.akka.http.RequestInfo
 import cn.edu.jxnu.akka.http.proxy.ProxyPool
@@ -87,7 +87,7 @@ class HtmlParserPageRetriever(baseUrl: String) extends PageRetriever {
                 if (!ValidationUrl.contentUrl(url)) {
                     throw new RetrievalException(ExceptionConstant.ETRIEVAL_MESSAGE_URL)
                 }
-                val proxy: cn.edu.jxnu.akka.http.proxy.Proxy = ProxyPool.getProxy
+                val proxy: Proxy = ProxyPool.getProxy
                 val javaProxy: java.net.Proxy = proxy.toJavaNetProxy
                 requestInfo.setProxy(javaProxy)
                 val con: Connection = HttpConnection.connect(url)

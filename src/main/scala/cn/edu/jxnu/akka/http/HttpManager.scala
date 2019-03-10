@@ -7,6 +7,7 @@ import java.security.{KeyManagementException, NoSuchAlgorithmException}
 import java.util.Random
 
 import cn.edu.jxnu.akka.common.{Constant, UserAgents}
+import cn.edu.jxnu.akka.entity.Proxy
 import javax.net.ssl.{SSLContext, TrustManager, X509TrustManager}
 import org.apache.http.client.config.{CookieSpecs, RequestConfig}
 import org.apache.http.client.methods.{CloseableHttpResponse, HttpGet, HttpRequestBase}
@@ -81,12 +82,12 @@ class HttpManager private() {
 
     def getResponse(url: String): CloseableHttpResponse = getResponse(url, null)
 
-    def getResponse(url: String, proxy: cn.edu.jxnu.akka.http.proxy.Proxy): CloseableHttpResponse = {
+    def getResponse(url: String, proxy: Proxy): CloseableHttpResponse = {
         val request = new HttpGet(url)
         getResponse(request, proxy)
     }
 
-    def getResponse(request: HttpRequestBase, proxy: cn.edu.jxnu.akka.http.proxy.Proxy): CloseableHttpResponse = {
+    def getResponse(request: HttpRequestBase, proxy: Proxy): CloseableHttpResponse = {
         request.setHeader("User-Agent", UserAgents.userAgentArray(new Random().nextInt(UserAgents.userAgentArray.length)))
         val httpClientContext = HttpClientContext.create
         var response: CloseableHttpResponse = null
@@ -111,7 +112,7 @@ class HttpManager private() {
     }
 
 
-    def checkProxy(proxy: cn.edu.jxnu.akka.http.proxy.Proxy): Boolean = {
+    def checkProxy(proxy: Proxy): Boolean = {
         if (proxy == null) return false
         var socket: Socket = null
         try {
@@ -156,10 +157,10 @@ class HttpManager private() {
     def getWebPage(url: String): ResponseInfo = getWebPage(url, Constant.charset, null)
 
     @throws[IOException]
-    def getWebPage(url: String, proxy: cn.edu.jxnu.akka.http.proxy.Proxy): ResponseInfo = getWebPage(url, Constant.charset, proxy)
+    def getWebPage(url: String, proxy: Proxy): ResponseInfo = getWebPage(url, Constant.charset, proxy)
 
     @throws[IOException]
-    def getWebPage(url: String, charset: String, proxy: cn.edu.jxnu.akka.http.proxy.Proxy): ResponseInfo = {
+    def getWebPage(url: String, charset: String, proxy: Proxy): ResponseInfo = {
         val page = new ResponseInfo
         var response: CloseableHttpResponse = null
         if (proxy == null) {

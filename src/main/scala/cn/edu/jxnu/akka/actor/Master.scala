@@ -3,10 +3,10 @@ package cn.edu.jxnu.akka.actor
 import java.util.concurrent.CountDownLatch
 
 import akka.actor.{ActorRef, UntypedAbstractActor}
-import cn.edu.jxnu.akka.VisitedPageStore
 import cn.edu.jxnu.akka.actor.message.{CommitMessage, CommittedMessage, IndexedMessage}
 import cn.edu.jxnu.akka.common.Constant
 import cn.edu.jxnu.akka.entity.PageContent
+import cn.edu.jxnu.akka.store.VisitedPageStore
 import org.slf4j.LoggerFactory
 
 /**

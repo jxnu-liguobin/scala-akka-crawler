@@ -1,8 +1,8 @@
 package cn.edu.jxnu.akka.example
 
-import cn.edu.jxnu.akka.VisitedPageStore
 import cn.edu.jxnu.akka.api.Execution
 import cn.edu.jxnu.akka.api.impl.{Executor, HtmlParserPageRetriever, IndexerImpl}
+import cn.edu.jxnu.akka.store.VisitedPageStore
 import org.apache.lucene.index.IndexWriter
 
 /**
