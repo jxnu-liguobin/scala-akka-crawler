@@ -31,14 +31,31 @@ object Constant {
     //TODO 可配置，待改
     final val index_path = "D:/git_project/scala-akka-crawler/"
 
-    /**
-     * 单个ip请求间隔，单位ms
-     */
+    //图片存放根目录，默认与本项目目录相同目录
+    final val img_target = "D:/git_project/scala-akka-crawler/"
+
+    //裁剪后的图片存放的子目录
+    final val img_modify = "/image/"
+
+    //图片裁剪之前的原图片
+    final val img_original = "/original/"
+
+
+    //是否保留原图
+    final val delete_the_original_image = true
+
+    //是否需要裁剪图片
+    final val is_tailoring_img = true
+
+    //图片默认裁剪大小，小于此比例不进行处理
+    final val img_width = 100
+    final val img_height = 100
+
+
+    //单个ip请求间隔，单位ms
     final val time_interval: Long = 1000
 
-    /**
-     * 代理socket验证超时
-     */
+    //代理socket验证超时
     final val proxy_timeout: Int = 3000
 
     final val userProxy = false

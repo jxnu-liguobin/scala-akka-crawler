@@ -8,6 +8,9 @@ import java.util.regex.Pattern
 import cn.edu.jxnu.akka.common.{Constant, ExceptionConstant}
 import cn.edu.jxnu.akka.exception.DownloadException
 import cn.edu.jxnu.akka.store.ImageUrlStore
+import com.alibaba.simpleimage.render._
+import com.alibaba.simpleimage.{ImageFormat, SimpleImageException}
+import org.apache.commons.io.FileUtils
 import org.slf4j.LoggerFactory
 
 import scala.collection.JavaConversions
@@ -20,20 +23,103 @@ import scala.concurrent.Future
  */
 object DownloadUtil {
 
-    val target = "D:/git_project/scala-akka-crawler/"
     private val logger = LoggerFactory.getLogger(DownloadUtil.getClass)
 
-    def downloadFuture(images: java.util.List[String]): Future[Boolean] = {
+    /**
+     * 图片裁剪
+     *
+     * 裁剪成功返回true
+     *
+     * 本方法依赖的api太老旧，会出现各种问题，有的jar还需要手动引入
+     *
+     * @param source  原图
+     * @param target  裁剪后
+     * @param imgType 图片类型
+     */
+    def tailoringIamge(source: String, target: String, imgType: ImageFormat): Boolean = {
+        var inStream: FileInputStream = null
+        var outStream: FileOutputStream = null
+        var wr: WriteRender = null
+        //是否需要裁剪
+        try {
+            //得到原图
+            val img = new File(source)
+            //经过裁剪处理的图片
+            val targetImg = new File(target)
+            inStream = new FileInputStream(img)
+            outStream = new FileOutputStream(targetImg)
+            val rr = new ReadRender(inStream)
+            val scaleParam = new ScaleParameter(Constant.img_width, Constant.img_height)
+            val sr = new ScaleRender(rr, scaleParam)
+            wr = new WriteRender(sr, outStream, imgType)
+            wr.render() //触发图像处理
+            //千万别用ImageWriteHelper处理，坑爹
+            //这里删除原图会失败
+            true
+        } catch {
+            case ex: Exception => {
+                logger.error(ex.getMessage)
+                false
+            }
+        }
+        finally {
+            if (inStream != null) {
+                inStream.close()
+            }
+
+            if (outStream != null) {
+                outStream.close()
+            }
+
+            if (wr != null) {
+                try {
+                    wr.dispose() //释放simpleImage的内部资源
+                } catch {
+                    case e: SimpleImageException => {
+                        logger.error(e.getMessage)
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 图片下载
+     *
+     * @param images    图片下载链接列表
+     * @param tailoring 是否裁剪图片
+     * @param deleted   是否删除原图
+     * @return
+     */
+    def downloadFuture(images: java.util.List[String], tailoring: Boolean, deleted: Boolean): Future[Boolean] = {
 
         val downloadImageBatch: Future[Boolean] = {
             Future {
+                var folder: String = null
                 for (img <- JavaConversions.asScalaIterator(images.iterator())) {
 
                     val imgType = verifyGet(img)
                     val times = String.valueOf(System.currentTimeMillis()) + "." + imgType
-                    val folder = DateUtil.formatDate(new Date())
-                    val fileTargetName = getImgPathName(target, folder, times)
+                    folder = DateUtil.formatDate(new Date())
+                    val fileTargetName = getImgPathName(Constant.img_target, folder + Constant.img_original, times)
                     downloadFile(img, fileTargetName)
+                    if (tailoring) {
+                        //需要裁剪
+                        val tailoringResult = tailoringIamge(fileTargetName, getImgPathName(Constant.img_target, folder + Constant.img_modify, times),
+                            ImageFormat.getImageFormat(imgType))
+                        if (tailoringResult) {
+                            logger.info("Successful image clipping")
+                        } else {
+                            logger.info("Picture clipping failed")
+                        }
+                    }
+                }
+                //需要删除原图片
+                if (deleted) {
+                    logger.info("Successful image clipping and delete the original image")
+                    FileUtils.deleteQuietly(new File(Constant.img_target + folder + Constant.img_original))
+                } else {
+                    logger.info("No need to delete")
                 }
                 true
             }
@@ -112,6 +198,7 @@ object DownloadUtil {
             out = new BufferedOutputStream(new FileOutputStream(fileToDownloadAs))
             val byteArray = Stream.continually(in.read).takeWhile(-1 !=).map(_.toByte).toArray
             out.write(byteArray)
+
         } catch {
             case ex: Exception => {
                 logger.info(ex.getMessage)
@@ -131,6 +218,12 @@ object DownloadUtil {
         }
     }
 
+    /**
+     * 验证图片后缀，无法验证返回jpg
+     *
+     * @param imageUrl
+     * @return
+     */
     def verifyGet(imageUrl: String): String = {
         val suffixes = Constant.suffixes
         val pat = Pattern.compile("[\\w]+[\\.](" + suffixes + ")")
