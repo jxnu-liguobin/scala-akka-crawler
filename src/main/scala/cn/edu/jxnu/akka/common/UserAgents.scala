@@ -1,9 +1,19 @@
 package cn.edu.jxnu.akka.common
 
+import java.util.Random
+
 /**
  * 浏览器标志
  */
 object UserAgents {
+
+    /**
+     * 随机选取
+     */
+    def getUserAgents(): String = {
+        val index = new Random().nextInt(UserAgents.userAgentArray.length)
+        userAgentArray(index)
+    }
 
     final val userAgentArray = Array("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36",
         "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2623.110 Safari/537.36",

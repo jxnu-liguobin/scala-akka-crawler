@@ -3,9 +3,9 @@ package cn.edu.jxnu.akka.example
 import java.util.concurrent.CountDownLatch
 
 import akka.actor.{ActorSystem, Props}
-import cn.edu.jxnu.akka.actor.ParallelActorMaster
+import cn.edu.jxnu.akka.actor.CrawlerActor
 import cn.edu.jxnu.akka.api.Execution
-import cn.edu.jxnu.akka.api.impl.{ChaosMonkeyPageRetriever, Executor}
+import cn.edu.jxnu.akka.api.impl.Executor
 import org.apache.lucene.index.IndexWriter
 
 /**
@@ -18,7 +18,7 @@ class FailingExecution extends Execution {
     def downloadAndIndex(path: String, writer: IndexWriter): Unit = {
         val actorSystem = ActorSystem.create
         val countDownLatch = new CountDownLatch(10)
-        val master = actorSystem.actorOf(Props.create(classOf[ParallelActorMaster], new ChaosMonkeyPageRetriever(path),
+        val master = actorSystem.actorOf(Props.create(classOf[CrawlerActor], new ChaosMonkeyPageRetriever(path),
             writer, countDownLatch))
         master ! path
         try {

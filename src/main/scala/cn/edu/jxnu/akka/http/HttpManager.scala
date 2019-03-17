@@ -4,7 +4,6 @@ import java.io.IOException
 import java.net.{InetSocketAddress, Socket}
 import java.security.cert.X509Certificate
 import java.security.{KeyManagementException, NoSuchAlgorithmException}
-import java.util.Random
 
 import cn.edu.jxnu.akka.common.{Constant, UserAgents}
 import cn.edu.jxnu.akka.entity.Proxy
@@ -88,7 +87,7 @@ class HttpManager private() {
     }
 
     def getResponse(request: HttpRequestBase, proxy: Proxy): CloseableHttpResponse = {
-        request.setHeader("User-Agent", UserAgents.userAgentArray(new Random().nextInt(UserAgents.userAgentArray.length)))
+        request.setHeader("User-Agent", UserAgents.getUserAgents)
         val httpClientContext = HttpClientContext.create
         var response: CloseableHttpResponse = null
         try {

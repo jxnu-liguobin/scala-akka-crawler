@@ -3,7 +3,7 @@ package cn.edu.jxnu.akka.run
 import java.util.concurrent.CountDownLatch
 
 import akka.actor.{ActorSystem, Props}
-import cn.edu.jxnu.akka.actor.ParallelActorMaster
+import cn.edu.jxnu.akka.actor.CrawlerActor
 import cn.edu.jxnu.akka.api.Execution
 import cn.edu.jxnu.akka.api.impl.{Executor, HtmlParserPageRetriever}
 import cn.edu.jxnu.akka.common.Constant
@@ -17,7 +17,7 @@ class FetchInParallelExecution extends Execution {
     override def downloadAndIndex(path: String, writer: IndexWriter) = {
         val actorSystem = ActorSystem.create()
         val countDownLatch = new CountDownLatch(Constant.count_latch_size)
-        val master = actorSystem.actorOf(Props.create(classOf[ParallelActorMaster], new HtmlParserPageRetriever(path),
+        val master = actorSystem.actorOf(Props.create(classOf[CrawlerActor], new HtmlParserPageRetriever(path),
             writer, countDownLatch))
         master ! (path)
         try {

@@ -32,6 +32,17 @@
 * springboot:1.5.9
 * rxjava2:2.2.3
 
+#### 目前主要功能
+
+* 支持爬取内容索引
+* 支持抓取时UserAgent随机选取
+* 支持抓取时代理服务器随机选取
+* 支持代理服务器定时更新以及缓存
+* 支持结合SpringBoot开发业务逻辑
+* 支持利用Actor实现分布式抓取、支持失败策略
+* 支持图片异步下载
+* 支持图片裁剪、存储
+
 #### 运行
 
 1. 简单执行：cn.edu.jxnu.akka.run.FetchInParallelExecution中main方法

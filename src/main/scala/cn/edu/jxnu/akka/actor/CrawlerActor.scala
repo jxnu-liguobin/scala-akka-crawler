@@ -17,9 +17,9 @@ import scala.concurrent.duration.Duration
 /**
  * 并发的主actor执行类
  */
-class ParallelActorMaster(latch: CountDownLatch) extends Master(latch) {
+class CrawlerActor(latch: CountDownLatch) extends Master(latch) {
 
-    private val logger = LoggerFactory.getLogger(classOf[ParallelActorMaster])
+    private val logger = LoggerFactory.getLogger(classOf[CrawlerActor])
 
     private var parser: ActorRef = _
     private var indexer: ActorRef = _

@@ -3,7 +3,6 @@ package cn.edu.jxnu.akka.example
 import java.util.concurrent.CountDownLatch
 
 import akka.actor.{ActorRef, ActorSystem, Props}
-import cn.edu.jxnu.akka.actor.SimpleActorMaster
 import cn.edu.jxnu.akka.api.Execution
 import cn.edu.jxnu.akka.api.impl.{Executor, HtmlParserPageRetriever}
 import org.apache.lucene.index.IndexWriter
