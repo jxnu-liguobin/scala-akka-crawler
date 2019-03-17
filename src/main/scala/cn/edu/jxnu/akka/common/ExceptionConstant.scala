@@ -22,8 +22,10 @@ object ExceptionConstant {
     final val ETRIEVAL_MESSAGE = "爬页面错误"
     final val ETRIEVAL_MESSAGE_TIMEOUT = "爬页面超时"
     final val ETRIEVAL_MESSAGE_JSOUP = "Jsoup爬页面错误"
+    final val ETRIEVAL_MESSAGE_JSOUP_CONNECT = "Jsoup爬页面错误-链接参数无效"
     final val ETRIEVAL_MESSAGE_MONKEY = "Something went horribly wrong when fetching the page."
     final val ETRIEVAL_MESSAGE_URL = "url验证失败"
+    final val ETRIEVAL_MESSAGE_OTHER = "其他失败"
 
     final val PROXY_MESSAGE_NNP = "暂时未找到可用代理"
     final val PROXY_MESSAGE_TIMEOUT = "暂时未找到可用代理"

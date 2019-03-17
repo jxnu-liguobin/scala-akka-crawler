@@ -1,4 +1,4 @@
-package cn.edu.jxnu.akka.common.util
+package cn.edu.jxnu.akka.util
 
 import java.text.SimpleDateFormat
 import java.util.Date

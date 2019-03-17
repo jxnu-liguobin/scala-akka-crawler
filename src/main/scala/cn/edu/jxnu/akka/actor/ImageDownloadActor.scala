@@ -2,14 +2,13 @@ package cn.edu.jxnu.akka.actor
 
 import akka.actor.Actor
 import cn.edu.jxnu.akka.actor.message.{ImageDownloadMessage, ImageDownloadedMessage}
-import cn.edu.jxnu.akka.common.util.DownloadUtil
 import cn.edu.jxnu.akka.common.{Constant, ExceptionConstant}
 import cn.edu.jxnu.akka.exception.DownloadException
 import cn.edu.jxnu.akka.store.ImageUrlStore
+import cn.edu.jxnu.akka.util.DownloadUtil
 import org.slf4j.LoggerFactory
 
 import scala.collection.JavaConversions
-import scala.concurrent.Future
 
 /**
  * 图片下载
@@ -33,8 +32,10 @@ class ImageDownloadActor extends Actor {
                 ImageUrlStore.rightPushAll(imgs: _*)
                 //可能阻塞，future有回调
                 try {
+                    logger.info("Total img size is {}", ImageUrlStore.getImageQueue().size())
+                    logger.info("To download img size is {}", ImageUrlStore.getImagesUrlToDownloadQueue().size())
                     var message = ""
-                    val downloadRet: Future[Boolean] = DownloadUtil.downloadFuture(ImageUrlStore.leftPollAll(),
+                    val downloadRet = DownloadUtil.downloadFuture(ImageUrlStore.leftPollAll(),
                         Constant.is_tailoring_img, Constant.delete_the_original_image)
                     //无效和下载失败的链接需要等待图片下载完成才能获取，否则可能获取不到最新值
                     if (downloadRet.isCompleted && downloadRet.value.get.isSuccess) {
@@ -52,13 +53,13 @@ class ImageDownloadActor extends Actor {
                             logger.info("There are duplicate links")
                         }
                     }
-                    this.sender() ! ImageDownloadedMessage(message, ImageUrlStore.getImageDuplicateList(),
-                        ImageUrlStore.getImageInvalidList())
+                    this.sender() ! (ImageDownloadedMessage(message, ImageUrlStore.getImageDuplicateList(),
+                        ImageUrlStore.getImageInvalidList()), self)
 
                 } catch {
                     case ex: DownloadException => {
                         logger.info("Download fail and message is {}", ex.getMessage)
-                        this.sender() ! ImageDownloadedMessage(ExceptionConstant.DOWNLOAD_MESSAGE_IMAGE, null, null)
+                        this.sender() ! (ImageDownloadedMessage(ExceptionConstant.DOWNLOAD_MESSAGE_IMAGE, null, null), self)
                     }
                 }
             }

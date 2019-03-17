@@ -5,8 +5,8 @@ import java.util.Date
 
 import cn.edu.jxnu.akka.api.Execution
 import cn.edu.jxnu.akka.common.Constant
-import cn.edu.jxnu.akka.common.util.DateUtil
 import cn.edu.jxnu.akka.exception.{IndexingException, RetrievalException}
+import cn.edu.jxnu.akka.util.DateUtil
 import org.apache.lucene.index._
 import org.apache.lucene.search.IndexSearcher
 import org.perf4j.{LoggingStopWatch, StopWatch}
@@ -42,7 +42,7 @@ class Executor(execution: Execution) {
             //使用传进来的执行器，回调它的下载与索引方法
             execution.downloadAndIndex(path, writer)
             //首次执行不执行commit会报错
-            writer.commit()
+//            writer.commit()
             stopWatch.stop(execution.getClass().getSimpleName())
         } catch {
             case ie: IndexingException => {

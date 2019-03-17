@@ -31,7 +31,7 @@ abstract class Master(latch: CountDownLatch) extends UntypedAbstractActor {
             }
             //页面
             case (content: PageContent, _) => {
-                logger.info("Find page")
+                logger.info("Find pages")
                 getIndexer() ! content
                 //存储待访问页面链接
                 visitedPageStore.addAll(content.getLinksToFollow())
@@ -39,26 +39,28 @@ abstract class Master(latch: CountDownLatch) extends UntypedAbstractActor {
                     //完成了则提交
                     getIndexer() ! CommitMessage(Constant.message_commit)
                 } else {
+                    logger.info("Total number of links is {},ToVisit number of links is {},InProgress number of links is {} ",
+                        VisitedPageStore.getAllPagesCount.toString, VisitedPageStore.getPagesToVisitCount.toString,
+                        VisitedPageStore.getInProgressCount.toString)
                     //继续获取下一个页面
                     for (page <- visitedPageStore.getNextBatch()) {
-                        getParser() ! page
+                        getParser() ! (page, self)
                     }
                 }
-
             }
             //索引
-            case indexedMessage: IndexedMessage => {
-                logger.info("Index finished")
+            case (indexedMessage: IndexedMessage, _) => {
+                logger.info("Indexer finished")
                 visitedPageStore.finished(indexedMessage.getPath)
                 if (visitedPageStore.isFinished()) {
+                    logger.info("Indexer all finished")
                     getIndexer() ! CommitMessage(Constant.message_commit)
                 }
 
             }
             //提交
-            case _: CommittedMessage => {
-                logger.info("All parse and index finished")
-                logger.info("Shutting down, finished")
+            case (_: CommittedMessage, _) => {
+                logger.info("All parser and indexer finished,then shutting down")
                 getContext().system.terminate()
                 latch.countDown()
             }

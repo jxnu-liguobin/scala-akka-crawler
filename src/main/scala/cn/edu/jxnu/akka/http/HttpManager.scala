@@ -5,7 +5,7 @@ import java.net.{InetSocketAddress, Socket}
 import java.security.cert.X509Certificate
 import java.security.{KeyManagementException, NoSuchAlgorithmException}
 
-import cn.edu.jxnu.akka.common.{Constant, UserAgents}
+import cn.edu.jxnu.akka.common.Constant
 import cn.edu.jxnu.akka.entity.Proxy
 import javax.net.ssl.{SSLContext, TrustManager, X509TrustManager}
 import org.apache.http.client.config.{CookieSpecs, RequestConfig}
@@ -87,7 +87,7 @@ class HttpManager private() {
     }
 
     def getResponse(request: HttpRequestBase, proxy: Proxy): CloseableHttpResponse = {
-        request.setHeader("User-Agent", UserAgents.getUserAgents)
+        request.setHeader(HttpHeaders.USER_AGENT, HttpHeaders.getUserAgents)
         val httpClientContext = HttpClientContext.create
         var response: CloseableHttpResponse = null
         try {

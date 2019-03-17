@@ -26,8 +26,15 @@ class PageParsingActor(pageRetriever: PageRetriever) extends UntypedAbstractActo
         logger.info("Page parsing actor is " + self)
         logger.info("PageParsingActor type is " + message.getClass.getSimpleName)
         message match {
-            case msg: String => {
-                val content: PageContent = pageRetriever.fetchPageContent(msg,Constant.userProxy)
+            case startMsg: String => {
+                val content: PageContent = pageRetriever.fetchPageContent(startMsg, Constant.userProxy)
+                sender ! (content, self)
+                //页面解析完成后就开始下载图片，而不是等到索引完成，因为索引是单线程IO
+                getDownloadImg ! ImageDownloadMessage(content.getImagePaths())
+            }
+            //页面链接
+            case (msg: String, _) => {
+                val content: PageContent = pageRetriever.fetchPageContent(msg, Constant.userProxy)
                 sender ! (content, self)
                 //页面解析完成后就开始下载图片，而不是等到索引完成，因为索引是单线程IO
                 getDownloadImg ! ImageDownloadMessage(content.getImagePaths())
@@ -60,9 +67,9 @@ class PageParsingActor(pageRetriever: PageRetriever) extends UntypedAbstractActo
     override def supervisorStrategy: SupervisorStrategy = OneForOneStrategy(maxNrOfRetries = 5, Duration.create("1 minute"), true) {
 
         //图片下载挂了继续干啊，忽略，继续下载！
-        case _: DownloadException => Resume
-        //其他异常上抛，不管了
-        case _: Exception => Escalate
+        case _: DownloadException => Escalate
+        //其他异常上抛
+        case _: Exception => Resume
 
     }
 

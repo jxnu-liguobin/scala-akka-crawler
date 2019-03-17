@@ -6,6 +6,8 @@ import cn.edu.jxnu.akka.actor.message._
 import cn.edu.jxnu.akka.api.Indexer
 import cn.edu.jxnu.akka.common.Constant
 import cn.edu.jxnu.akka.entity.PageContent
+import cn.edu.jxnu.akka.exception.IndexingException
+import cn.edu.jxnu.akka.store.VisitedPageStore
 import org.slf4j.LoggerFactory
 
 import scala.concurrent.duration.Duration
@@ -35,21 +37,27 @@ class IndexingActor(indexer: Indexer) extends UntypedAbstractActor {
         message match {
             //页面消息
             case content: PageContent => {
-                indexer.index(content)
-                //查出来
-                this.search ! SearchMessage(Constant.message_search_all)
-                //                val imgs = JavaConversions.asScalaBuffer(content.getImagePaths())
-                //                ImageUrlStore.rightPushs(imgs: _*)
+                try {
+                    indexer.index(content)
+                } catch {
+                    //吃掉异常
+                    case ie: IndexingException => {
+                        logger.error(ie.getMessage)
+                        logger.warn("url {} has an exception", ie.url)
+                        VisitedPageStore.finished(content.getPath())
+                    }
+                }
                 //报告给主线程
-                this.getSender() ! IndexedMessage(content.getPath())
+                this.getSender() ! (IndexedMessage(content.getPath()), self)
             }
             //索引提交消息
             case _: CommitMessage => {
                 //报告索引完成
                 indexer.commit()
-                indexer.close()
                 //getSelf可以获取actor的ActorRef引用
-                this.getSender() ! CommittedMessage(Constant.message_committed)
+                this.getSender() ! (CommittedMessage(Constant.message_committed), self)
+                //查出来
+                search ! SearchMessage(Constant.message_search_all)
             }
             //其他消息
             case _ => {

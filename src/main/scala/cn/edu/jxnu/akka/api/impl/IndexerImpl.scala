@@ -82,6 +82,7 @@ class IndexerImpl(indexWriter: IndexWriter) extends Indexer {
             val result: TopDocs = searcher.search(new MatchAllDocsQuery(), 100)
             //查询的命中总数。
             logger.info("Found {} results ", result.totalHits)
+            logger.info("Found {} scoreDocs ", result.scoreDocs.length)
             //遍历命中文件的编号，通过搜索器查询到原文档，并输出id
             for (scoreDoc <- result.scoreDocs) {
                 val doc: Document = searcher.doc(scoreDoc.doc)
@@ -90,7 +91,7 @@ class IndexerImpl(indexWriter: IndexWriter) extends Indexer {
             close()
         } catch {
             case ex: Exception => {
-                logger.error(ex.getMessage, ex.getStackTrace)
+                logger.error(ex.getMessage)
                 new IndexingException(ExceptionConstant.INDEX_MESSAGE)
             }
         }

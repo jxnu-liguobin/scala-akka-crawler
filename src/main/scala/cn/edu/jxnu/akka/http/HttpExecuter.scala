@@ -7,20 +7,19 @@ import org.jsoup.Connection
  *
  * @param requestInfo
  */
-class ConnectionExecuter(requestInfo: RequestInfo) {
+class HttpExecuter(requestInfo: RequestInfo) {
 
     /**
      * 封装了自定义的请求头处理
      */
-    //    @throws
-    def connect() = {
-        setRequestParams().get()
+    def getDocument() = {
+        requestParams().get()
     }
 
     /**
      * 只输入url不能调用本方法
      */
-    private def setRequestParams(): Connection = {
+    private def requestParams(): Connection = {
 
         val connection = requestInfo.getConnection
 
@@ -45,7 +44,6 @@ class ConnectionExecuter(requestInfo: RequestInfo) {
         if (requestInfo.getUserAgent != null) {
             connection.userAgent(requestInfo.getUserAgent)
         }
-
         connection
     }
 

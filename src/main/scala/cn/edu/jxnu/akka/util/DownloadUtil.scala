@@ -1,4 +1,4 @@
-package cn.edu.jxnu.akka.common.util
+package cn.edu.jxnu.akka.util
 
 import java.io._
 import java.net.{HttpURLConnection, URL}
@@ -83,6 +83,9 @@ object DownloadUtil {
         }
     }
 
+
+    private var url: String = _
+
     /**
      * 图片下载
      *
@@ -97,13 +100,13 @@ object DownloadUtil {
             Future {
                 var folder: String = null
                 for (img <- JavaConversions.asScalaIterator(images.iterator())) {
-
+                    url = img
                     val imgType = verifyGet(img)
                     val times = String.valueOf(System.currentTimeMillis()) + "." + imgType
                     folder = DateUtil.formatDate(new Date())
                     val fileTargetName = getImgPathName(Constant.img_target, folder + Constant.img_original, times)
                     downloadFile(img, fileTargetName)
-                    if (tailoring) {
+                    if (false) {
                         //需要裁剪
                         val tailoringResult = tailoringIamge(fileTargetName, getImgPathName(Constant.img_target, folder + Constant.img_modify, times),
                             ImageFormat.getImageFormat(imgType))
@@ -114,10 +117,12 @@ object DownloadUtil {
                         }
                     }
                 }
-                //需要删除原图片
+                logger.info("Download success sum is {}", images.size())
+                //需要删除原图片，创建新的文件夹
                 if (deleted) {
                     logger.info("Successful image clipping and delete the original image")
                     FileUtils.deleteQuietly(new File(Constant.img_target + folder + Constant.img_original))
+                    FileUtils.forceMkdir(new File(Constant.img_target + folder + Constant.img_original))
                 } else {
                     logger.info("No need to delete")
                 }
@@ -200,6 +205,11 @@ object DownloadUtil {
             out.write(byteArray)
 
         } catch {
+            case se: SimpleImageException => {
+                logger.info(se.getMessage)
+                ImageUrlStore.getImageInvalidList().add(fileUrl)
+                throw new DownloadException(ExceptionConstant.DOWNLOAD_CODE_IMAGE, ExceptionConstant.DOWNLOAD_MESSAGE_IMAGE)
+            }
             case ex: Exception => {
                 logger.info(ex.getMessage)
                 ImageUrlStore.getImageInvalidList().add(fileUrl)
@@ -237,7 +247,7 @@ object DownloadUtil {
             }
         }
         //返回默认是后缀
-        "jpg"
+        "JPG"
     }
 
 }

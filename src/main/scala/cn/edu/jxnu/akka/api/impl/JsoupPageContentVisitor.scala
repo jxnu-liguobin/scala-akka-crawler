@@ -3,11 +3,11 @@ package cn.edu.jxnu.akka.api.impl
 import java.util
 import java.util.List
 
-import cn.edu.jxnu.akka.common.util.ValidationUrl
 import cn.edu.jxnu.akka.common.{CollectTag, ExceptionConstant}
 import cn.edu.jxnu.akka.entity.PageContent
 import cn.edu.jxnu.akka.exception.ConnectionException
-import cn.edu.jxnu.akka.http.{ConnectionExecuter, RequestInfo}
+import cn.edu.jxnu.akka.http.{HttpExecuter, RequestInfo}
+import cn.edu.jxnu.akka.util.ValidationUrl
 import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element, Node}
 import org.jsoup.select.{Elements, NodeVisitor}
@@ -67,11 +67,15 @@ class JsoupPageContentVisitor(depth: Int) extends NodeVisitor {
             element.tagName() match {
                 case CollectTag.Tag_A => {
                     //TODO 会爆内存，需要队列
-                    if (ValidationUrl.contentUrl(element.absUrl("href"))) {
+                    if (ValidationUrl.startWithBasicUrl(baseUrl, element.absUrl("href")) &&
+                      ValidationUrl.contentUrl(element.absUrl("href"))) {
                         logger.info("Using link pointing to {}", element.absUrl("href"))
                         if (linksToVisit.contains(element.absUrl("href"))) {
                             logger.info(element.absUrl("href") + " already exist")
                         } else {
+//                            logger.info("Total number of links is {},ToVisit number of links is {},InProgress number of links is {} ",
+//                                VisitedPageStore.getAllPagesCount.toString, VisitedPageStore.getPagesToVisitCount.toString,
+//                                VisitedPageStore.getInProgressCount.toString)
                             linksToVisit.add(element.absUrl("href"))
                         }
 
@@ -95,11 +99,11 @@ class JsoupPageContentVisitor(depth: Int) extends NodeVisitor {
                     preContent = text
                 }
                 case _ => {
-                    logger.warn("{} node that do not require parsing in PageContent", node.nodeName())
+                    //                    logger.warn("{} node that do not require parsing in PageContent", node.nodeName())
                 }
             }
         } else {
-            logger.warn("Not a element")
+            //            logger.warn("Not a element")
         }
 
         if (depth >= this.depth) {
@@ -124,12 +128,12 @@ class JsoupPageContentVisitor(depth: Int) extends NodeVisitor {
             throw new ConnectionException(ExceptionConstant.CONNECTION_CODE, ExceptionConstant.CONNECTION_MESSAGE_NNP)
         }
 
-        val connection: ConnectionExecuter = new ConnectionExecuter(requestInfo)
+        val connection: HttpExecuter = new HttpExecuter(requestInfo)
 
         if (connection == null) {
             throw new ConnectionException(ExceptionConstant.CONNECTION_CODE, ExceptionConstant.CONNECTION_MESSAGE)
         }
-        connection.connect()
+        connection.getDocument()
     }
 
     @volatile

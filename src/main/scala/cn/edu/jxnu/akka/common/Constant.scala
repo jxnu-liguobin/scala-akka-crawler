@@ -13,13 +13,13 @@ object Constant {
     final val message_downloaded_image = "确认图片下载"
 
     //actor池大小
-    final val round_robin_pool_size = 100
+    final val round_robin_pool_size = 20
 
     //main方法等待的最大actor
-    final val count_latch_size = 50
+    final val count_latch_size = 10
 
     //DOM深度遍历的最大深度
-    final val depth_dom = 150
+    final val depth_dom = 15
 
     //下载支持的图片后缀格式
     final val suffixes = "jpeg|gif|jpg|png|bmp"
@@ -41,11 +41,11 @@ object Constant {
     final val img_original = "/original/"
 
 
-    //是否保留原图
-    final val delete_the_original_image = true
+    //是否删除原图
+    final val delete_the_original_image = false
 
     //是否需要裁剪图片
-    final val is_tailoring_img = true
+    final val is_tailoring_img = false
 
     //图片默认裁剪大小，小于此比例不进行处理
     final val img_width = 100
@@ -62,6 +62,6 @@ object Constant {
 
     final val charset = "UTF-8"
 
-    final val url_test = "https://www.baidu.com/s?wd=%E6%B5%8B%E8%AF%95&rsv_spt=1&rsv_iqid=0xaa8f265a0002da5a&issp=1&f=8&rsv_bp=0&rsv_idx=2&ie=utf-8&tn=baiduhome_pg&rsv_enter=0&rsv_sug3=2&rsv_sug1=1&rsv_sug7=100&inputT=2178&rsv_sug4=3864"
+    final val url_test = "http://image.baidu.com/search/index?ct=201326592&tn=baiduimage&word=%E5%9C%A8%E7%BA%BF%E7%BF%BB%E8%AF%91&pn=0&ie=utf-8&oe=utf-8&cl=2&lm=-1&fr=&se=&sme=&hd=1&latest=0&copyright=0"
 
 }

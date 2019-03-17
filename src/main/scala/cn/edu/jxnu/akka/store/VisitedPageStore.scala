@@ -18,6 +18,15 @@ object VisitedPageStore {
     //处理中的页面
     private val inProgress: Set[String] = new HashSet[String]()
 
+    @volatile
+    def getAllPagesCount = allPages.size
+
+    @volatile
+    def getInProgressCount = inProgress.size
+
+    @volatile
+    def getPagesToVisitCount = pagesToVisit.size
+
     /**
      * 添加页面
      *
@@ -48,8 +57,10 @@ object VisitedPageStore {
      * @param page
      * @return
      */
-    def finished(page: String) = {
-        inProgress.remove(page)
+    def finished(page: String) = synchronized {
+        if (inProgress.contains(page)) {
+            inProgress.remove(page)
+        }
     }
 
     /**
@@ -86,6 +97,7 @@ object VisitedPageStore {
      *
      * @return
      */
-    def isFinished(): Boolean = pagesToVisit.isEmpty() && inProgress.isEmpty()
+    @volatile
+    def isFinished(): Boolean = getInProgressCount == 0 && getPagesToVisitCount == 0
 
 }

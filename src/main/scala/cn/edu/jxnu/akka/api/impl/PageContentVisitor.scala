@@ -4,8 +4,8 @@ import java.util
 import java.util.List
 
 import cn.edu.jxnu.akka.api.PageVisitor
-import cn.edu.jxnu.akka.common.util.ValidationUrl
 import cn.edu.jxnu.akka.entity.PageContent
+import cn.edu.jxnu.akka.util.ValidationUrl
 import org.htmlparser.Tag
 import org.htmlparser.tags.{BodyTag, ImageTag, LinkTag, TitleTag}
 import org.htmlparser.visitors.NodeVisitor
