@@ -97,13 +97,12 @@ object DownloadUtil {
     def downloadFuture(images: java.util.List[String], tailoring: Boolean, deleted: Boolean): Future[Boolean] = {
 
         val downloadImageBatch: Future[Boolean] = {
+            var folder = DateUtil.formatDate(new Date())
             Future {
-                var folder: String = null
                 for (img <- JavaConversions.asScalaIterator(images.iterator())) {
                     url = img
                     val imgType = verifyGet(img)
                     val times = String.valueOf(System.currentTimeMillis()) + "." + imgType
-                    folder = DateUtil.formatDate(new Date())
                     val fileTargetName = getImgPathName(Constant.img_target, folder + Constant.img_original, times)
                     downloadFile(img, fileTargetName)
                     if (false) {
