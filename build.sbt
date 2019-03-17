@@ -29,7 +29,7 @@ libraryDependencies ++= Seq(
     "org.apache.httpcomponents" % "httpclient" % "4.5.3",
     "io.reactivex.rxjava2" % "rxjava" % "2.2.3",
     //    "javax.media" % "jai_core" % "1.1.3",//仓库文件失效了
-    "com.sun.media" % "jai-codec" % "1.1.3",
+//    "com.sun.media" % "jai-codec" % "1.1.3",
     "com.alibaba" % "simpleimage" % "1.2.3" exclude("org.slf4j", "slf4j-log4j12"),
     "org.springframework.boot" % "spring-boot-autoconfigure" % "1.5.9.RELEASE" exclude("org.springframework.boot", "spring-boot-starter-logging"),
     "org.springframework.boot" % "spring-boot-starter-web" % "1.5.9.RELEASE" exclude("org.springframework.boot", "spring-boot-starter-logging"),

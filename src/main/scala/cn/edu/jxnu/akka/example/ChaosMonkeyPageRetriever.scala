@@ -1,5 +1,6 @@
-package cn.edu.jxnu.akka.api.impl
+package cn.edu.jxnu.akka.example
 
+import cn.edu.jxnu.akka.api.impl.HtmlParserPageRetriever
 import cn.edu.jxnu.akka.common.ExceptionConstant
 import cn.edu.jxnu.akka.entity.PageContent
 import cn.edu.jxnu.akka.exception.RetrievalException

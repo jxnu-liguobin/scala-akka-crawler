@@ -1,8 +1,9 @@
-package cn.edu.jxnu.akka.actor
+package cn.edu.jxnu.akka.example
 
 import java.util.concurrent.CountDownLatch
 
 import akka.actor.{ActorRef, Props}
+import cn.edu.jxnu.akka.actor.{IndexingActor, Master, PageParsingActor}
 import cn.edu.jxnu.akka.api.PageRetriever
 import cn.edu.jxnu.akka.api.impl.IndexerImpl
 import org.apache.lucene.index.IndexWriter
