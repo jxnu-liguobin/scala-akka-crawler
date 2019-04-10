@@ -22,6 +22,7 @@ class FetchInParallelExecution extends Execution {
         master ! (path)
         try {
             //计数，控制主进程不能提取结束
+            //这样会出现一个问题。如果允许的actor比这个值还小，会导致程序一直阻塞不结束
             countDownLatch.await()
             actorSystem.terminate(); //旧版本是shutdown()
         } catch {

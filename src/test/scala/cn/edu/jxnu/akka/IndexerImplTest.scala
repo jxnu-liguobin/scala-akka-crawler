@@ -1,7 +1,5 @@
 package cn.edu.jxnu.akka
 
-import java.util
-
 import cn.edu.jxnu.akka.api.impl.IndexerImpl
 import cn.edu.jxnu.akka.entity.PageContent
 import org.apache.lucene.index._
@@ -22,7 +20,7 @@ class IndexerImplTest {
         val config: IndexWriterConfig = new IndexWriterConfig(Version.LUCENE_47, new IKAnalyzer(true))
         val writer: IndexWriter = new IndexWriter(index, config)
         val indexerImpl: IndexerImpl = new IndexerImpl(writer)
-        val content: PageContent = new PageContent("http://path", new util.ArrayList[String](), "This is the title", "This is the content")
+        val content: PageContent = new PageContent("http://path", new java.util.ArrayList[String](), "This is the title", "This is the content")
         indexerImpl.index(content)
         indexerImpl.commit()
 

@@ -8,7 +8,8 @@ scalaVersion := "2.11.8"
 retrieveManaged := true
 //添加偏僻库
 resolvers += "mvnrepository" at "https://mvnrepository.com/artifact/"
-
+//javacOptions ++= Seq("-encoding", "UTF-8")
+unmanagedBase := baseDirectory.value / "libs"
 //仓库的配置文件是repositories
 //%% 自动给库包的报名结尾加上Scala的版本号,%只用于分割groupId与artifactId
 libraryDependencies ++= Seq(
