@@ -70,8 +70,8 @@ maven-centra
 - 额外（非必须）
 
 1. IDEA 默认设置中搜sbt，设定最大Max堆1024MB（指定项目默认的sbt内存）；
-2. IDEA 默认启动添加虚拟机参数，指定构建配置、sbt根路径以及仓库地址（指定项目默认的构建配置参数）；
-3. 修改sbtopts文件，增加项 ```-mem   1024``` 指定全局sbt的内存；
+2. 修改sbtopts文件，增加项 ```-mem   1024``` 指定全局sbt的内存；
+3. IDEA 默认启动添加下列虚拟机参数，指定构建配置、sbt根路径以及仓库地址（指定项目默认的构建配置参数）；
 ```
 -Dsbt.log.format=true -Dfile.encoding=UTF8 -Dsbt.boot.directory=D:/sbt -Dsbt.global.base=D:/sbt -Dsbt.ivy.home=D:/sbt -Dsbt.repository.config=D:/sbt/conf/repo.properties
 ```
