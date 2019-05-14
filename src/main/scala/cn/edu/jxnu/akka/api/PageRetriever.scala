@@ -32,5 +32,6 @@ abstract class PageRetriever {
      * @param useProxy
      * @return
      */
+    @deprecated
     def fetchPageContent(url: String, useProxy: Boolean): PageContent = null
 }

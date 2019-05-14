@@ -24,7 +24,6 @@ class HtmlParserPageRetriever(baseUrl: String) extends PageRetriever {
 
     private val logger = LoggerFactory.getLogger(classOf[HtmlParserPageRetriever])
 
-    @deprecated
     override def fetchPageContent(url: String): PageContent = {
 
         logger.info("Use htmlparser Fetching {}", url)
@@ -44,7 +43,6 @@ class HtmlParserPageRetriever(baseUrl: String) extends PageRetriever {
         }
     }
 
-    @deprecated
     override def fetchPageContentWithJsoup(url: String): PageContent = {
         logger.info("Use jsoup Fetching {}", url)
         try {

@@ -59,7 +59,6 @@
 1. 找到sbt安装目录下的conf文件夹
 2. 在conf下创建repositories文件
 3. repositories中加入以下内容
-
 ```
 [repositories]
 local
@@ -68,6 +67,16 @@ typesafe: http://repo.typesafe.com/typesafe/ivy-releases/, [organization]/[modul
 sonatype-oss-releases
 maven-centra
 ```
+- 额外（非必须）
+
+1. IDEA 默认设置中搜sbt，设定最大Max堆1024MB（指定项目默认的sbt内存）；
+2. IDEA 默认启动添加虚拟机参数，指定构建配置、sbt根路径以及仓库地址（指定项目默认的构建配置参数）；
+3. 修改sbtopts文件，增加项 ```-mem   1024``` 指定全局sbt的内存；
+```
+-Dsbt.log.format=true -Dfile.encoding=UTF8 -Dsbt.boot.directory=D:/sbt -Dsbt.global.base=D:/sbt -Dsbt.ivy.home=D:/sbt -Dsbt.repository.config=D:/sbt/conf/repo.properties
+```
+注意：“额外”这里仓库配置是引用了 repo.properties 文件而不是默认的repositories。
+
 
 #### 示意图
 
