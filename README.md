@@ -1,7 +1,11 @@
 基于Scala Akka生产者-消费者模型的爬虫
 
 [![Build Status](https://travis-ci.org/jxnu-liguobin/scala-akka-crawler.svg?branch=master)](https://travis-ci.org/jxnu-liguobin/scala-akka-crawler)
-[![codecov](https://codecov.io/gh/jxnu-liguobin/scala-akka-crawler/branch/master/graph/badge.svg)](https://codecov.io/gh/jxnu-liguobin/scala-akka-crawler)
+![GitHub](https://img.shields.io/github/license/jxnu-liguobin/scala-akka-crawler.svg)
+![GitHub top language](https://img.shields.io/github/languages/top/jxnu-liguobin/scala-akka-crawler.svg)
+![GitHub followers](https://img.shields.io/github/followers/jxnu-liguobin.svg)
+![GitHub forks](https://img.shields.io/github/forks/jxnu-liguobin/scala-akka-crawler.svg)
+![GitHub stars](https://img.shields.io/github/stars/jxnu-liguobin/scala-akka-crawler.svg)
 ---
 
 > * 本项目最初参考了Florian Hopf的akka-crawler-example项目的scala-version：
