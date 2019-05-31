@@ -7,5 +7,3 @@ after_success:
  - bash <(curl -s https://codecov.io/bash) -t "6602d341-bfdc-4319-99d9-95000f2a5f5f"
 jdk:
  - oraclejdk8
-coverageEnabled:
- - true
