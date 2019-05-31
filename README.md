@@ -3,9 +3,9 @@
 [![Build Status](https://travis-ci.org/jxnu-liguobin/scala-akka-crawler.svg?branch=master)](https://travis-ci.org/jxnu-liguobin/scala-akka-crawler)
 ![GitHub](https://img.shields.io/github/license/jxnu-liguobin/scala-akka-crawler.svg)
 ![GitHub top language](https://img.shields.io/github/languages/top/jxnu-liguobin/scala-akka-crawler.svg)
-![GitHub followers](https://img.shields.io/github/followers/jxnu-liguobin.svg)
-![GitHub forks](https://img.shields.io/github/forks/jxnu-liguobin/scala-akka-crawler.svg)
 ![GitHub stars](https://img.shields.io/github/stars/jxnu-liguobin/scala-akka-crawler.svg)
+![GitHub forks](https://img.shields.io/github/forks/jxnu-liguobin/scala-akka-crawler.svg)
+![GitHub followers](https://img.shields.io/github/followers/jxnu-liguobin.svg)
 ---
 
 > * 本项目最初参考了Florian Hopf的akka-crawler-example项目的scala-version：
