@@ -1,7 +1,10 @@
-## 基于Scala Akka生产者-消费者模型的爬虫
-  
+基于Scala Akka生产者-消费者模型的爬虫
 
-#### 本项目最初参考了Florian Hopf的akka-crawler-example项目的scala-version：
+[![Build Status](https://travis-ci.org/jxnu-liguobin/scala-akka-crawler.svg?branch=master)](https://travis-ci.org/jxnu-liguobin/scala-akka-crawler)
+[![codecov](https://codecov.io/gh/jxnu-liguobin/scala-akka-crawler/branch/master/graph/badge.svg)](https://codecov.io/gh/jxnu-liguobin/scala-akka-crawler)
+---
+
+> * 本项目最初参考了Florian Hopf的akka-crawler-example项目的scala-version：
 
 详细说明：
 
@@ -34,15 +37,15 @@
 
 #### 目前主要功能
 
-* 支持爬取内容索引
-* 支持抓取时UserAgent随机选取
-* 支持抓取时代理服务器随机选取
-* 支持代理服务器定时更新以及缓存
-* 支持结合SpringBoot开发业务逻辑
-* 支持利用Actor实现分布式抓取、支持重启等策略
-* 支持图片异步下载
-* 支持图片裁剪、存储
-* 支持忽略爬取异常并剔除URL
+- [x] 支持爬取内容索引
+- [x] 支持抓取时UserAgent随机选取
+- [x] 支持抓取时代理服务器随机选取
+- [x] 支持代理服务器定时更新以及缓存
+- [x] 支持结合SpringBoot开发业务逻辑
+- [x] 支持利用Actor实现分布式抓取、支持重启等策略
+- [x] 支持图片异步下载
+- [x] 支持图片裁剪、存储
+- [x] 支持忽略爬取异常并剔除URL
 
 #### 运行
 
