@@ -1,5 +1,5 @@
 基于Scala Akka生产者-消费者模型的爬虫
-
+---
 [![Build Status](https://travis-ci.org/jxnu-liguobin/scala-akka-crawler.svg?branch=master)](https://travis-ci.org/jxnu-liguobin/scala-akka-crawler)
 ![GitHub](https://img.shields.io/github/license/jxnu-liguobin/scala-akka-crawler.svg)
 ![GitHub top language](https://img.shields.io/github/languages/top/jxnu-liguobin/scala-akka-crawler.svg)
