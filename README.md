@@ -5,7 +5,6 @@
 ![GitHub top language](https://img.shields.io/github/languages/top/jxnu-liguobin/scala-akka-crawler.svg)
 ![GitHub stars](https://img.shields.io/github/stars/jxnu-liguobin/scala-akka-crawler.svg)
 ![GitHub forks](https://img.shields.io/github/forks/jxnu-liguobin/scala-akka-crawler.svg)
-![GitHub followers](https://img.shields.io/github/followers/jxnu-liguobin.svg)
 ---
 
 > * 本项目最初参考了Florian Hopf的akka-crawler-example项目的scala-version：
